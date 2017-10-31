@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<mysqldump xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<database name="book">
+	<table_structure name="authors">
+		<field Field="id" Type="int(11)" Null="NO" Key="PRI" Extra="auto_increment" Comment="" />
+		<field Field="name" Type="varchar(255)" Null="NO" Key="" Extra="" Comment="" />
+		<field Field="create_at" Type="datetime" Null="NO" Key="" Extra="" Comment="" />
+		<key Table="authors" Non_unique="0" Key_name="PRIMARY" Seq_in_index="1" Column_name="id" Collation="A" Cardinality="5" Null="" Index_type="BTREE" Comment="" Index_comment="" />
+		<options Name="authors" Engine="InnoDB" Version="10" Row_format="Compact" Rows="5" Avg_row_length="3276" Data_length="16384" Max_data_length="0" Index_length="0" Data_free="0" Auto_increment="27" Create_time="2017-10-12 13:55:36" Collation="utf8_general_ci" Create_options="" Comment="" />
+	</table_structure>
+	<table_data name="authors">
+	<row>
+		<field name="id">20</field>
+		<field name="name">Diney Costeloe</field>
+		<field name="create_at">2017-10-16 15:16:23</field>
+	</row>
+	<row>
+		<field name="id">21</field>
+		<field name="name">Loreth Anne White</field>
+		<field name="create_at">2017-10-16 15:16:38</field>
+	</row>
+	<row>
+		<field name="id">22</field>
+		<field name="name">Amy Harmon</field>
+		<field name="create_at">2017-10-16 15:16:47</field>
+	</row>
+	<row>
+		<field name="id">23</field>
+		<field name="name">Richard H. Thaler</field>
+		<field name="create_at">2017-10-16 15:16:55</field>
+	</row>
+	<row>
+		<field name="id">24</field>
+		<field name="name">Tess Gerritsen</field>
+		<field name="create_at">2017-10-16 15:17:07</field>
+	</row>
+	</table_data>
+</database>
+</mysqldump>

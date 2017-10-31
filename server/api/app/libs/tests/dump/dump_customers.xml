@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<mysqldump xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<database name="book">
+	<table_structure name="customers">
+		<field Field="id" Type="int(11)" Null="NO" Key="PRI" Extra="auto_increment" Comment="" />
+		<field Field="name" Type="varchar(255)" Null="NO" Key="" Extra="" Comment="" />
+		<field Field="email" Type="varchar(255)" Null="NO" Key="" Extra="" Comment="" />
+		<field Field="password" Type="varchar(255)" Null="NO" Key="" Extra="" Comment="" />
+		<field Field="discaunt" Type="int(11)" Null="NO" Key="" Extra="" Comment="" />
+		<field Field="token" Type="varchar(255)" Null="NO" Key="" Extra="" Comment="" />
+		<field Field="token_create_at" Type="int(11)" Null="NO" Key="" Extra="" Comment="" />
+		<field Field="status" Type="int(11)" Null="NO" Key="" Extra="" Comment="" />
+		<field Field="id_role" Type="int(11)" Null="NO" Key="MUL" Extra="" Comment="" />
+		<field Field="create_at" Type="datetime" Null="NO" Key="" Extra="" Comment="" />
+		<key Table="customers" Non_unique="0" Key_name="PRIMARY" Seq_in_index="1" Column_name="id" Collation="A" Cardinality="1" Null="" Index_type="BTREE" Comment="" Index_comment="" />
+		<key Table="customers" Non_unique="1" Key_name="id_role" Seq_in_index="1" Column_name="id_role" Collation="A" Cardinality="1" Null="" Index_type="BTREE" Comment="" Index_comment="" />
+		<options Name="customers" Engine="InnoDB" Version="10" Row_format="Compact" Rows="1" Avg_row_length="16384" Data_length="16384" Max_data_length="0" Index_length="16384" Data_free="0" Auto_increment="2" Create_time="2017-10-20 08:33:24" Collation="utf8_general_ci" Create_options="" Comment="" />
+	</table_structure>
+	<table_data name="customers">
+	<row>
+		<field name="id">1</field>
+		<field name="name">yevhen</field>
+		<field name="email">leo@mail.cz</field>
+		<field name="password">$2y$10$4oujZTCU.sng4rqAKMWeU.WiDaPPrWTCVBl.0BakT.knh9ziJYw2i</field>
+		<field name="discaunt">0</field>
+		<field name="token">zzwGLM28U8dcY1viApTogVVt8CyhLm6A</field>
+		<field name="token_create_at">1508749460</field>
+		<field name="status">1</field>
+		<field name="id_role">1</field>
+		<field name="create_at">2017-10-23 10:30:18</field>
+	</row>
+	</table_data>
+</database>
+</mysqldump>

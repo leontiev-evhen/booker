@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<mysqldump xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<database name="book">
+	<table_structure name="orders">
+		<field Field="id" Type="int(11)" Null="NO" Key="PRI" Extra="auto_increment" Comment="" />
+		<field Field="sum" Type="int(11)" Null="NO" Key="" Extra="" Comment="" />
+		<field Field="id_customer" Type="int(11)" Null="NO" Key="MUL" Extra="" Comment="" />
+		<field Field="id_status" Type="int(11)" Null="NO" Key="MUL" Extra="" Comment="" />
+		<field Field="id_payment" Type="int(11)" Null="NO" Key="MUL" Extra="" Comment="" />
+		<field Field="create_at" Type="datetime" Null="NO" Key="" Extra="" Comment="" />
+		<key Table="orders" Non_unique="0" Key_name="PRIMARY" Seq_in_index="1" Column_name="id" Collation="A" Cardinality="3" Null="" Index_type="BTREE" Comment="" Index_comment="" />
+		<key Table="orders" Non_unique="1" Key_name="id_customer" Seq_in_index="1" Column_name="id_customer" Collation="A" Cardinality="3" Null="" Index_type="BTREE" Comment="" Index_comment="" />
+		<key Table="orders" Non_unique="1" Key_name="id_status" Seq_in_index="1" Column_name="id_status" Collation="A" Cardinality="3" Null="" Index_type="BTREE" Comment="" Index_comment="" />
+		<key Table="orders" Non_unique="1" Key_name="id_payment" Seq_in_index="1" Column_name="id_payment" Collation="A" Cardinality="3" Null="" Index_type="BTREE" Comment="" Index_comment="" />
+		<options Name="orders" Engine="InnoDB" Version="10" Row_format="Compact" Rows="3" Avg_row_length="5461" Data_length="16384" Max_data_length="0" Index_length="49152" Data_free="0" Auto_increment="5" Create_time="2017-10-20 08:31:48" Collation="utf8_general_ci" Create_options="" Comment="" />
+	</table_structure>
+	<table_data name="orders">
+	<row>
+		<field name="id">1</field>
+		<field name="sum">500</field>
+		<field name="id_customer">1</field>
+		<field name="id_status">4</field>
+		<field name="id_payment">1</field>
+		<field name="create_at">2017-10-23 10:32:48</field>
+	</row>
+	<row>
+		<field name="id">2</field>
+		<field name="sum">500</field>
+		<field name="id_customer">1</field>
+		<field name="id_status">1</field>
+		<field name="id_payment">1</field>
+		<field name="create_at">2017-10-23 10:32:56</field>
+	</row>
+	<row>
+		<field name="id">3</field>
+		<field name="sum">300</field>
+		<field name="id_customer">1</field>
+		<field name="id_status">1</field>
+		<field name="id_payment">4</field>
+		<field name="create_at">2017-10-23 10:35:43</field>
+	</row>
+	<row>
+		<field name="id">4</field>
+		<field name="sum">220</field>
+		<field name="id_customer">1</field>
+		<field name="id_status">1</field>
+		<field name="id_payment">4</field>
+		<field name="create_at">2017-10-23 10:56:36</field>
+	</row>
+	</table_data>
+</database>
+</mysqldump>

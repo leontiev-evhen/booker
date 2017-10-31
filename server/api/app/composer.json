@@ -1,0 +1,22 @@
+{
+    "name": "app/booker",
+    "description": "autoload class",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Yevhen",
+            "email": "leontevevgenii@gmail.com"
+        }
+    ],
+    "autoload": {
+    "psr-4": {
+            "libs\\": "libs/"
+        },
+        "files": ["config.php"]
+    },
+    "require": {},
+    "require-dev": {
+        "phpunit/dbunit": "^3.0",
+        "phpunit/phpunit": "^6.2"
+    }
+}
