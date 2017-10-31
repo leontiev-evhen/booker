@@ -60,8 +60,8 @@
 		},
   	},
   	created() {
-  		if (localStorage["admin"]) {
-  			location.href="/admin"
+  		if (localStorage["profile"]) {
+  			location.href="/"
   		}
   		
   	}

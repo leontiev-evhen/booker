@@ -42,7 +42,7 @@
 
 
 function Calendar2(id, year, month) {
-console.log(month)
+
 var Dlast = new Date(year,month+1,0).getDate(),
     D = new Date(year,month,Dlast),
     DNlast = new Date(D.getFullYear(),D.getMonth(),Dlast).getDay(),
@@ -74,6 +74,7 @@ for(var  i = 1; i <= Dlast; i++) {
 }
 for(var  i = DNlast; i < 7; i++) calendar += '<td>&nbsp;';
 document.querySelector('#'+id+' tbody').innerHTML = calendar;
+console.log(D.getMonth())
 document.querySelector('#'+id+' thead td:nth-child(2)').innerHTML = month[D.getMonth()] +' '+ D.getFullYear();
 document.querySelector('#'+id+' thead td:nth-child(2)').dataset.month = D.getMonth();
 document.querySelector('#'+id+' thead td:nth-child(2)').dataset.year = D.getFullYear();

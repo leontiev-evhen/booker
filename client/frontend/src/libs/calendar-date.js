@@ -42,8 +42,8 @@ export default class CalendarDate {
 	}
 
 	// день недели первого дня месяца
-	getFirstDayWeekMonth () {
-		return new Date(this.date.getFullYear(),this.date.getMonth(),1).getDay() + 1;
+	getFirstDayWeekMonth (num = 1) {
+		return new Date(this.date.getFullYear(),this.date.getMonth(),1).getDay() + num;
 	}
 
 }
