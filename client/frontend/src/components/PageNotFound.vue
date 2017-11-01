@@ -1,7 +1,7 @@
 <template>
-	<div class="center">
+	<center>
 		<img src="../assets/404.png" class="error">
-	</div>
+	</center>
 </template>
 
 <script>

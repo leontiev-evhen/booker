@@ -1,6 +1,6 @@
 <template>
   	<div class="create">
-	  	<h3 class="my-4"><i class="fa fa-user-plus" aria-hidden="true"></i> Create User</h3>
+	  	<h3 class="my-4"><i class="fa fa-list-alt" aria-hidden="true"></i> Create Event</h3>
 		<form @submit.prevent="create">
 			<p v-if="error" class="is-danger">{{error}}</p>
 			<div class="form-group">

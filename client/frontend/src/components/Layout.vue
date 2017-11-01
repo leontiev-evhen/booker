@@ -34,7 +34,7 @@ export default {
 				this.$parent.logout();
 			}
 		} else {
-			this.$parent.logout();
+			//this.$parent.logout();
 		}
 		
   	},

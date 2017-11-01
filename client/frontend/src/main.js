@@ -10,6 +10,9 @@ import VueAxios from 'vue-axios'
 import VeeValidate from 'vee-validate'
 import VueDefaultValue from 'vue-default-value'
 
+import Vuex from 'vuex'
+
+Vue.use(Vuex)
 
 Vue.use(VeeValidate)
 Vue.use(VueAxios, axios)
@@ -18,9 +21,13 @@ Vue.use(VueDefaultValue)
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
+let store = {
+	admin: false
+};
 new Vue({
   el: '#app',
   router,
   template: '<App/>',
-  components: { App }
+  components: { App },
+  store
 })

@@ -1,6 +1,6 @@
 <template>
   	<div class="edit">
-	  	<h3 class="my-4"><i class="fa fa-user" aria-hidden="true"></i> Edit user</h3>
+	  	<h3 class="my-4"><i class="fa fa-list-alt" aria-hidden="true"></i> Edit event</h3>
 		<form @submit.prevent="edit">
 			<div class="form-group">
 			    <label for="text">Name:</label>
@@ -16,15 +16,8 @@
 			    <label for="text">Discaunt:</label>
 			    <input type="text" class="form-control" v-default-value="user.discaunt" v-model="discaunt">
 			</div>
-			<div class="form-group">
-				<label for="text">Status:</label><br>
-				<label for="text">Active:</label>
-				<input name="status" type="radio" :value="1" @click="isStatus($event)" :checked="user.status == 1">
-				<label for="text">Inactive:</label>
-				<input name="status" type="radio" :value="0" @click="isStatus($event)" :checked="user.status == 0">
-			</div>
-			
-			<button type="submit" class="btn btn-primary">Edit</button>
+			<button type="submit" class="btn btn-primary">Update</button>
+			<button type="submit" class="btn btn-danger">Delete</button>
 		</form>
 		<div v-if="orders">
 			<h4 class="my-4">Orders</h4>
