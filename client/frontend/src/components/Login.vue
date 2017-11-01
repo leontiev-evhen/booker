@@ -37,7 +37,7 @@
 					  }
 					}
 	    
-				    this.axios.put(this.$parent.AJAX_URL + '/book/client/api/auth', {
+				    this.axios.put(this.$parent.AJAX_URL + '/booker/client/api/auth', {
 				    	email: this.email,
 				    	password: btoa(this.password),
 				    	is_admin: 1
