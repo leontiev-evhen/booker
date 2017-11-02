@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import store from '../libs/store'
 
 import PageNotFound from '@/components/PageNotFound'
 import Home from '@/components/Home'
@@ -20,8 +21,16 @@ import AdminEventCreate from '@/components/admin/events/create'
 
 Vue.use(Router)
 
+function is_admin (to, from, next) {
+   if (store.is_admin) {
+      next();
+   } else {
+      next('/');
+   }
+}
+
 export default new Router({
-  mode: 'history',
+  //mode: 'history',
   routes: [
     {
 		path: '/',
@@ -42,16 +51,19 @@ export default new Router({
 				path: '/admin/users',
 				name: 'AdminUsers',
 				component: AdminUsers,
+            beforeEnter: is_admin
 			},
 			{
 				path: '/admin/user/create',
 				name: 'AdminUserCreate',
 				component: AdminUserCreate,
+            beforeEnter: is_admin
 			},
 			{
 				path: '/admin/user/edit/:id',
 				name: 'AdminUserEdit',
 				component: AdminUserEdit,
+            beforeEnter: is_admin
 			},
 			{
 				path: '/admin/event/create',

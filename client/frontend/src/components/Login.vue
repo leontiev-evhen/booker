@@ -23,7 +23,6 @@
 			email: '',
 			password: '',
 			error: '',
-			access: false
   		}
   	},
   	methods: {
@@ -40,7 +39,6 @@
 				    this.axios.put(this.$parent.AJAX_URL + '/booker/client/api/auth', {
 				    	email: this.email,
 				    	password: btoa(this.password),
-				    	is_admin: 1
 				    }, config)  
 				    .then((response) => {
 
@@ -48,8 +46,14 @@
 			            if (!response.data.success) {
 			              	self.error = response.data.message
 			            } else {
-			              	localStorage.setItem('admin', JSON.stringify(response.data.data));
-			              	location.href = '/admin';
+			            	if (response.data.data.id_role == 1) {
+			            		this.$store.is_admin = true;
+			            	}
+
+			              	localStorage.setItem('profile', JSON.stringify(response.data.data));
+			              	self.$emit('login');
+			              	self.$router.push('/');
+
 			            }
 			          } else {
 			            	console.log(response.data.message)
@@ -61,7 +65,8 @@
   	},
   	created() {
   		if (localStorage["profile"]) {
-  			location.href="/"
+  			this.$router.push('/');
+
   		}
   		
   	}

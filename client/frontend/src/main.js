@@ -11,8 +11,8 @@ import VeeValidate from 'vee-validate'
 import VueDefaultValue from 'vue-default-value'
 
 import Vuex from 'vuex'
-
 Vue.use(Vuex)
+import store from './libs/store'
 
 Vue.use(VeeValidate)
 Vue.use(VueAxios, axios)
@@ -20,10 +20,10 @@ Vue.use(VueDefaultValue)
 
 Vue.config.productionTip = false
 
+
 /* eslint-disable no-new */
-let store = {
-	admin: false
-};
+
+
 new Vue({
   el: '#app',
   router,

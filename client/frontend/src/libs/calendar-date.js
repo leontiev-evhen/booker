@@ -33,4 +33,26 @@ export default class CalendarDate {
 	getDay () {
 		return this.date.getDay();
 	}
+
+	getHours () {
+		return this.date.getHours();
+	}
+
+	getMinutes () {
+		return this.date.getMinutes();
+	}
+
+	getSeconds() {
+		return this.date.getTime() / 1000;
+	}
+
+	toTimestamp(strDate){
+		let datum = Date.parse(strDate);
+		return datum / 1000;
+	}
+
+	getLastDayMonth (year, month) {
+		return new Date(year, month + 1, 0).getDate();;
+	}
+
 }

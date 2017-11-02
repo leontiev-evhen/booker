@@ -12,7 +12,9 @@
 										 <h2><i class="fa fa-calendar" aria-hidden="true"></i> {{month}} {{year}}</h2>
 									  </span>
 									</td>
-			
+									<td class="fc-header-center">
+										{{room_name}}
+									</td>
 									<td class="fc-header-right">
 											<span @click="changeFormat" class="fc-button fc-button-prev fc-state-default format">
 											Format <img :src="'/static/images/' + format + '.png'" class="format_img">
@@ -35,17 +37,22 @@
 	          	
 	      </div>
 
-	      <div class="col-md-3 right_sidebar">
+	      <div class="col-md-3">
 	      	<center class="mt-15">
-					<a href="/admin/event/create" class="btn btn-brown">
+					<a href="/#/admin/event/create" class="btn btn-brown">
 						Book it 
 						<i class="fa fa-plus-circle" aria-hidden="true"></i>
 					</a>
-					<a href="/admin/users" class="btn btn-brown">
+					<a v-if="this.$store.is_admin" href="/#/admin/users" class="btn btn-brown">
 						Employee list
 						<i class="fa fa-list" aria-hidden="true"></i>
 					</a>
 					<h3>List rooms</h3>
+					<ul>
+						<li v-for="room in rooms">
+							<a href="#" @click="getEvents(room.id, room.name)">{{room.name}}</a>
+						</li>
+					</ul>
 				</center>
 				
 			</div>
@@ -66,14 +73,29 @@ export default {
 	      DATE: new CalendarDate(),
 	      year: '',
 	      monthNumber: '',
-	      format:'ua'
+	      format:'ua',
+	      rooms: '',
+	      room_name: '',
+	      room_id: '',
+	      events: ''
     	}
   	},
   	created:function() {
-		console.log(this.$store.admin)
   		this.year = this.DATE.getFullYear();
   		this.monthNumber = this.DATE.getMonth();
     	this.getMonthArr(this.year, this.monthNumber)
+
+    	//get all rooms
+    	this.axios.get(this.$parent.$parent.AJAX_URL + '/booker/client/api/rooms').then((response) => {
+
+			if (response.status == 200) {
+				if (response.data.success) {
+					this.rooms = response.data.data
+				} 
+			} else {
+				console.log(response.data.message)
+			}
+		})
   	},
   	components:{
     	Month
@@ -152,6 +174,40 @@ export default {
 	        this.dayArr = this.getMonthArr(this.year, this.monthNumber,'ua')
 	      }
 	   },
+
+	   getEvents: function (id, name) {
+	
+	   		this.room_name = name;
+	   		this.room_id = id;
+
+			var time_end = this.DATE.toTimestamp((this.monthNumber + 1 )+"/" + this.DATE.getLastDayMonth(this.year, this.monthNumber) + "/"+this.year + " " + this.DATE.getHours() + ":" + this.DATE.getMinutes());
+
+			var time_start = this.DATE.toTimestamp((this.monthNumber + 1 )+"/01/"+this.year + " " + this.DATE.getHours() + ":" + this.DATE.getMinutes());
+
+
+	   		//get all events
+    		this.axios.get(this.$parent.$parent.AJAX_URL + '/booker/client/api/events/?time_start=' + time_start + '&time_end=' + time_end).then((response) => {
+
+				if (response.status == 200) {
+					if (response.data.success) {
+						this.events = response.data.data
+
+						var newArr = [];
+						for(var i in this.events) {
+							if (this.events[i].id_room == id) {
+								newArr.push(this.events[i])
+							}
+						}
+
+						console.log(newArr)
+					} 
+				} else {
+					console.log(response.data.message)
+				}
+			});
+
+
+	   }
 
   	}
 }

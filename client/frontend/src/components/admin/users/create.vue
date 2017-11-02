@@ -1,5 +1,5 @@
 <template>
-  	<div class="create">
+  	<div class="create col-md-6">
 	  	<h3 class="my-4"><i class="fa fa-user-plus" aria-hidden="true"></i> Create User</h3>
 		<form @submit.prevent="create">
 			<p v-if="error" class="is-danger">{{error}}</p>
@@ -24,8 +24,11 @@
 				<span v-show="errors.has('repeat_password')" class="help is-danger">{{ errors.first('repeat_password') }}</span>
 			</div>
 			<div class="form-group">
-			    <label for="text">Discaunt:</label>
-			    <input type="text" class="form-control" v-model="discaunt">
+			    <label for="text">Role:</label>
+			    <select v-model="id_role" class="form-control">
+			    	<option value="1">Admin</option>
+			    	<option value="2">User</option>
+			    </select>
 			</div>
 			<button type="submit" class="btn btn-primary">Create</button>
 		</form>
@@ -43,7 +46,7 @@ export default {
 			email: '',
 			password: '',
 			repeat_password: '',
-			status: '',
+			id_role: '',
 			error: ''
 		}
   	},
@@ -62,8 +65,7 @@ export default {
 							name: this.name,
 							email: this.email,
 							password: btoa(this.password),
-							discaunt: (this.discaunt) ? +this.discaunt : 0,
-							status: 1,
+							id_role: (this.id_role) ? +this.id_role : 2,
 						}, config)  
 						.then((response) => {
 
@@ -71,7 +73,7 @@ export default {
 								if (!response.data.success) {
 									self.error = response.data.message
 								} else {
-									location.href = '/admin/users'
+									location.href = '/#/admin/users'
 								}
 							} else {
 								console.log(response.data.message)
@@ -80,7 +82,7 @@ export default {
 				}
      		});
  		}
-  	}
+  	},
 }
 </script>
 

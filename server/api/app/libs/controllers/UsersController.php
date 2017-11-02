@@ -14,13 +14,12 @@ class UsersController extends Controller
         'name'      => 'string',
         'email'     => 'string',
         'password'  => 'string',
-        'discaunt'  => 'integer',
-        'status'    => 'integer',
+        'id_role'   => 'integer',
     ];
 
     public function __construct ($params)
     {
-        $this->model = new CustomersModel();
+        $this->model = new UsersModel();
 
         $this->headers = getallheaders();
 
@@ -35,23 +34,23 @@ class UsersController extends Controller
     {
         if (!empty($this->id))
         {       
-            return $this->getCustomerById();
+            return $this->getUserById();
         }
 
-        $data = $this->model->getAllCustomers();
+        $data = $this->model->getAllUsers();
         if (!empty($data))
         {
-            return $this->getServerAnswer(200, true, 'customers successfully received', $data);
+            return $this->getServerAnswer(200, true, 'users successfully received', $data);
         }
         return $this->getServerAnswer(500, false, 'Internal Server Error');
     }
 
     public function getUserById ()
     {
-        $data = $this->model->getOneCustomer($this->id);
+        $data = $this->model->getOneUser($this->id);
         if (!empty($data))
         {
-            return $this->getServerAnswer(200, true, 'genre successfully received', $data);
+            return $this->getServerAnswer(200, true, 'user successfully received', $data);
         }
         else
         {
@@ -66,7 +65,7 @@ class UsersController extends Controller
             $password =  base64_decode($this->data->password);
             $this->data->password = password_hash($password, PASSWORD_DEFAULT);
    
-            $aData = $this->model->createCustomer($this->data);
+            $aData = $this->model->createUser($this->data);
             if ($aData['result'])
             {
                 return $this->getServerAnswer(200, $aData['result'], $aData['message']);
@@ -84,9 +83,9 @@ class UsersController extends Controller
     {
         if ($this->validate() && $this->id) 
         {
-            if ($this->model->updateCustomer($this->data, $this->id))
+            if ($this->model->updateUser($this->data, $this->id))
             {
-                return $this->getServerAnswer(200, true, 'genre update successful');
+                return $this->getServerAnswer(200, true, 'user update successful');
             }
             else
             {

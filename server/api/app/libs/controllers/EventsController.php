@@ -8,16 +8,12 @@ class EventsController extends Controller
 {
 	protected $model;
 	private $headers;
-	private $customer;
-	private $customer_id;
+	private $time_start;
+	private $time_end;
 
 	protected $rules = [
-		'user_id' 		=> 'integer',
-		'payment_id'	=> 'integer',
-		'id_status'		=> 'integer',
-		'id'			=> 'integer',
-        'books'         => 'array',
-        'sum'           => 'integer'
+        'time_start' => 'integer',
+		'time_end'   => 'integer',
 	];
 
 
@@ -28,9 +24,13 @@ class EventsController extends Controller
 
         if (!empty($params))
         {
+            if (isset($_GET['time_start'], $_GET['time_end'])) {
+                $this->time_start = (int)trim($_GET['time_start']);
+                $this->time_end = (int)trim($_GET['time_end']);
+            }
+
             $param = explode('/', $params);
             $this->id = isset($param[0]) ? (int)$param[0] : null;
-            $this->customer = isset($param[1]) ? (string)$param[1] : null;
         }
     }
 
@@ -41,15 +41,10 @@ class EventsController extends Controller
             return $this->getEventById();
         }
 
-        if (!empty($this->customer))
-        {       
-            return $this->getEventsByCustomer();
-        }
-        
-        $data = $this->model->getAll();
+        $data = $this->model->getAll($this->time_start, $this->time_end);
         if (!empty($data))
         {
-            return $this->getServerAnswer(200, true, 'orders successfully received', $data);
+            return $this->getServerAnswer(200, true, 'events successfully received', $data);
         }
         return $this->getServerAnswer(500, false, 'Internal Server Error');
     }

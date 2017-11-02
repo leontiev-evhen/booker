@@ -7,24 +7,27 @@
 <script>
 
 export default {
-  name: 'app',
-  data() {
-    return {
-      //AJAX_URL: 'http://192.168.0.15/~user11',
-      AJAX_URL: 'http://courses.site',
-      BASE_URL: 'http://192.168.0.15/~user11/book',
-      user: null
-    }
-  },
-  methods: {
-    login: function() {
-      this.user = JSON.parse(localStorage.getItem("profile"))
+    name: 'app',
+    data() {
+        return {
+              //AJAX_URL: 'http://192.168.0.15/~user11',
+              AJAX_URL: 'http://courses.site',
+              BASE_URL: 'http://192.168.0.15/~user11/book',
+              user: null
+        }
     },
-    logout: function() {
-        delete localStorage["profile"]
-        location.href = '/login';
+    methods: {
+        login: function() {
+          this.user = JSON.parse(localStorage.getItem("profile"));
+        },
+        logout: function() {
+            delete localStorage["profile"];
+            this.$router.push('/login');
+        }
+    },
+    created() {
+        this.user = JSON.parse(localStorage.getItem("profile"));
     }
-  }
 }
 </script>
 

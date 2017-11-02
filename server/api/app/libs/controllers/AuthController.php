@@ -1,7 +1,7 @@
 <?php
 namespace libs\controllers;
 use libs\core\Controller;
-use libs\models\CustomersModel;
+use libs\models\UsersModel;
 
 class AuthController extends Controller
 {
@@ -14,14 +14,11 @@ class AuthController extends Controller
         'name'      => 'string',
         'email'     => 'string',
         'password'  => 'string',
-        'discaunt'  => 'integer',
-        'status'    => 'integer',
-        'is_admin'  => 'integer'
     ];
 
     public function __construct ($params)
     {
-        $this->model = new CustomersModel();
+        $this->model = new UsersModel();
         $this->headers = getallheaders();
     }
 
@@ -41,25 +38,16 @@ class AuthController extends Controller
     {
         if ($this->validate()) 
         {
-
             $password =  base64_decode($this->data->password);
 
-            if (isset($this->data->is_admin))
-            {
-                $aData = $this->model->checkAdmin ($this->data);
-            }
-            else
-            {
-                $aData = $this->model->checkCustomer ($this->data);
-            }
- 
+            $aData = $this->model->checkUser ($this->data);
+            
             if ($aData)
             {
                 if (password_verify($password, $aData['password'])) {
 
                     $aData = array_unique($aData);
                     unset($aData['password']);
-                    unset($aData['discaunt']);
 
                     $aData['access_token'] = $this->createToken($aData['id']);
 

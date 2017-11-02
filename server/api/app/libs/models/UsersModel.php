@@ -7,11 +7,12 @@ class UsersModel extends Model
 {
 	private $table = 'users';
 
-    public function getAll ()
+    public function getAllUsers ()
     {
         $sql = $this->select([
                 'id',
                 'name',
+                'id_role',
                 'create_at'])
             ->from(DB_PREFIX.$this->table)
             ->execute();
@@ -25,14 +26,13 @@ class UsersModel extends Model
         return false;
     }
 
-    public function getOne ($id)
+    public function getOneUser ($id)
     {
         $sql = $this->select([
                 'id',
                 'name',
                 'email',
-                'discaunt',
-                'status',
+                'id_role',
                 'token',
                 'create_at'])
             ->from(DB_PREFIX.$this->table)
@@ -52,8 +52,7 @@ class UsersModel extends Model
 	public function getToken ($token)
     {
         $sql = $this->select([
-                'id',
-                'discaunt'])
+                'id'])
             ->from(DB_PREFIX.$this->table)
             ->where(['token' => "<:token>"])
 			->limit(1)
@@ -78,8 +77,6 @@ class UsersModel extends Model
                 'name' 		 => '<?>',
                 'email' 	 => '<?>',
                 'password' 	 => '<?>',
-                'discaunt' 	 => '<?>',
-                'status'     => '<?>',
                 'id_role'   => '<?>',
                 'create_at' => '<?>'
             ])
@@ -87,14 +84,12 @@ class UsersModel extends Model
 	        $sql = str_replace(["'<", ">'"], '', $sql);
 	        
 	        $STH = $this->connect->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
-	        $role = ROLE;
+
 	        $STH->bindParam(1, $data->name);
 	        $STH->bindParam(2, $data->email);
 	        $STH->bindParam(3, $data->password);
-	        $STH->bindParam(4, $data->discaunt);
-            $STH->bindParam(5, $data->status);
-            $STH->bindParam(6, $role);
-	        $STH->bindParam(7, $this->date);
+            $STH->bindParam(4, $data->id_role);
+	        $STH->bindParam(5, $this->date);
 	        if ($STH->execute())
 	        {
 	            return ['result' => true, 'message' => 'user was added successful'];
@@ -114,8 +109,7 @@ class UsersModel extends Model
             ->set([
                 'name' => '<?>',
                 'email' => '<?>',
-                'discaunt' => '<?>',
-                'status' => '<?>'])
+                'id_role' => '<?>'])
             ->where(['id' => '<?>'])
 			->limit(1)
             ->execute();
@@ -125,9 +119,8 @@ class UsersModel extends Model
         
         $STH->bindParam(1, $data->name);
         $STH->bindParam(2, $data->email);
-        $STH->bindParam(3, $data->discaunt);
-        $STH->bindParam(4, $data->status);
-        $STH->bindParam(5, $id);
+        $STH->bindParam(3, $data->id_role);
+        $STH->bindParam(4, $id);
 
         if ($STH->execute())
         {
@@ -142,34 +135,10 @@ class UsersModel extends Model
     			'id',
     			'name',
     			'email',
-                'discaunt',
+                'id_role',
     			'password'])
             ->from(DB_PREFIX.$this->table)
             ->where(['email' => "<:email>"])
-            ->where(['status' => 1], 'and')
-           ->execute();
-        $sql = str_replace(["'<", ">'"], '', $sql);
-       
-        $STH = $this->connect->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
-        if ($STH->execute([':email' => $data->email]))
-        {
-            return $STH->fetch();
-        }  
-        return false;
-    }
-
-    public function checkAdmin ($data)
-    {
-        $sql = $this->select([
-                'id',
-                'name',
-                'email',
-                'discaunt',
-                'password'])
-            ->from(DB_PREFIX.$this->table)
-            ->where(['email' => "<:email>"])
-            ->where(['status' => 1], 'and')
-            ->where(['id_role' => 1], 'and')
            ->execute();
         $sql = str_replace(["'<", ">'"], '', $sql);
        
@@ -231,7 +200,7 @@ class UsersModel extends Model
     {
     	$sql = $this->select([
     			'id'])
-            ->from($DB_PREFIX.this->table)
+            ->from(DB_PREFIX.$this->table)
             ->where(['token' => "<:token>"])
             ->where(['token_create_at' => "<:token_create_at>"], "and", ">=")
            	->execute();

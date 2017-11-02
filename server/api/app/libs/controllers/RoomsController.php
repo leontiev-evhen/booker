@@ -1,21 +1,18 @@
 <?php
 namespace libs\controllers;
 use libs\core\Controller;
-use libs\models\AuthorsModel;
+use libs\models\RoomsModel;
 
 
-class AuthorsController extends Controller
+class RoomsController extends Controller
 {
 
     protected $model;
     private $id;
-    protected $rules = [
-        'name'      => 'string'
-    ];
 
     public function __construct ($params)
     {
-        $this->model = new AuthorsModel();
+        $this->model = new RoomsModel();
         
         if ($params)
         {
@@ -24,42 +21,26 @@ class AuthorsController extends Controller
         }
     }
 
-    public function getAuthors ($params = false)
+    public function getRooms ()
     {
-    	if (!empty($this->id))
-    	{    	
-    		return $this->getAuthorById();
-    	}
-
-    	$data = $this->model->getAllAuthors();
+    	$data = $this->model->getAllRooms();
     	if (!empty($data))
     	{
-    		return $this->getServerAnswer(200, true, 'authors successfully received', $data);
+    		return $this->getServerAnswer(200, true, 'rooms successfully received', $data);
     	}
     	return $this->getServerAnswer(500, false, 'Internal Server Error');
     }
 
-    public function getAuthorById ()
-    {
- 		$data = $this->model->getOneAuthor($this->id);
-		if (!empty($data))
-		{
-			return $this->getServerAnswer(200, true, 'author successfully received', $data);
-		}
-		else
-		{
-			return $this->getServerAnswer(500, false, 'Internal Server Error');
-		}
-    }
 
-    public function postAuthors ()
+
+    public function postRooms ()
     {
     	if ($this->validate()) 
         {
             $data = $this->model->createAuthor($this->data);
             if ($data)
             {
-                return $this->getServerAnswer(200, true, 'author create successful');
+                return $this->getServerAnswer(200, true, 'room create successful');
             }
             else
             {
@@ -70,13 +51,13 @@ class AuthorsController extends Controller
         return $this->getServerAnswer(400, false, 'Bad Request');
     }
 
-    public function putAuthors ()
+    public function putRooms ()
     { 
     	if ($this->validate() && $this->id) 
         {
             if ($this->model->updateAuthor($this->data, $this->id))
             {
-                return $this->getServerAnswer(200, true, 'author upadate successful');
+                return $this->getServerAnswer(200, true, 'room upadate successful');
             }
             else
             {
@@ -87,13 +68,13 @@ class AuthorsController extends Controller
         return $this->getServerAnswer(400, false, 'Bad Request');
     }
 
-    public function deleteAuthors ()
+    public function deleteRooms ()
     {
     	if ($this->id)
     	{
     		if ($this->model->deleteAuthor($this->id))
 	        {
-	            return $this->getServerAnswer(200, true, 'author delete successful');
+	            return $this->getServerAnswer(200, true, 'room delete successful');
 	        }
 	        else
 	        {
