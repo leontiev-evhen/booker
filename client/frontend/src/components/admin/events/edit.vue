@@ -16,7 +16,7 @@
 			    <label for="text">Discaunt:</label>
 			    <input type="text" class="form-control" v-default-value="user.discaunt" v-model="discaunt">
 			</div>
-			<button type="submit" class="btn btn-primary">Update</button>
+			<button type="submit" class="btn btn-primary" @click="close">Update</button>
 			<button type="submit" class="btn btn-danger">Delete</button>
 		</form>
 		<div v-if="orders">
@@ -86,7 +86,9 @@ export default {
 		}
   	},
  	methods: {
-
+		close: function () {
+			window.close();
+		},
  		hideInfo: function() {
  			this.showInfo.id = 0
  		},

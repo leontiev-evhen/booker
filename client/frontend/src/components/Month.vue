@@ -13,16 +13,7 @@
                   <tr v-for="week in monthArr">
                 
                      <td  v-for="day in week" class="fc-mon fc-widget-content fc-past" :class="{ 'fc-day': day.data}">
-                     <div class="cell">
-                        <div class="fc-day-number" :class="{ today: day.current }">
-
-                            <day :day="day"></day> 
-
-                        </div>
-                        <div class="fc-day-content"><div>&nbsp;</div>
-                        </div>
-                     </div>
-                  
+						<day :day="day"></day> 
                      </td>
                   </tr>
                </tbody>

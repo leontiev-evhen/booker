@@ -77,7 +77,7 @@ export default {
 	      rooms: '',
 	      room_name: '',
 	      room_id: '',
-	      events: ''
+	      events: []
     	}
   	},
   	created:function() {
@@ -120,6 +120,7 @@ export default {
 			  let i = 1;
 			  while (date.getMonth() == month) {
 				let current = false;  
+				let events = [];
 				  if (
 				  i == this.DATE.getDate() && 
 				  this.DATE.getMonth() == date.getMonth() && 
@@ -127,7 +128,15 @@ export default {
 						current = true;						
 				  } 
 				  
-				  this.dayArr[row].push({data: date.getDate(), current: current})
+				  
+				  if (this.events) {
+					  for (var k in this.events) {
+						if (new Date(this.events[k].time_start * 1000).getDate() == i && new Date(this.events[k].time_start * 1000).getMonth() == month) {
+							events.push(this.events[k])
+						}
+					  }
+				  }
+				  this.dayArr[row].push({data: date.getDate(), current: current, events: events})
 				if (this.getDay(date,format) % 7 == 6) { // вс, последний день - перевод строки
 				  row ++
 				  this.dayArr[row] = []
@@ -162,6 +171,7 @@ export default {
 				this.year++
 			}
 			
+			//this.getEvents(this.room_id, this.room_name);
 			this.dayArr = this.getMonthArr(this.year, this.monthNumber)
 	   },
 
@@ -190,16 +200,14 @@ export default {
 
 				if (response.status == 200) {
 					if (response.data.success) {
-						this.events = response.data.data
-
-						var newArr = [];
-						for(var i in this.events) {
-							if (this.events[i].id_room == id) {
-								newArr.push(this.events[i])
+						let data_events = response.data.data;
+						this.events = [];
+						for(var i in data_events) {
+							if (data_events[i].id_room == id) {
+								this.events.push(data_events[i]);
 							}
 						}
-
-						console.log(newArr)
+						this.dayArr = this.getMonthArr(this.year, this.monthNumber)
 					} 
 				} else {
 					console.log(response.data.message)
