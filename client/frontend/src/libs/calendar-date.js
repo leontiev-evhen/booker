@@ -3,6 +3,10 @@ export default class CalendarDate {
 	constructor(year, month) {
 		this.date = new Date(); 
 	}
+	
+	getNameMonths () {
+		return ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+	}
 
 	getNameMonth (key) {
 		var dataMonths = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];

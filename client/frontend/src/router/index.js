@@ -50,7 +50,7 @@ export default new Router({
 				path: '/user/create',
 				name: 'UserCreate',
 				component: UserCreate,
-            	beforeEnter: is_admin
+            	//beforeEnter: is_admin
 			},
 			{
 				path: '/user/edit/:id',
