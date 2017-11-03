@@ -6,17 +6,19 @@ import router from './router'
 
 import axios from 'axios'
 import VueAxios from 'vue-axios'
-
 import VeeValidate from 'vee-validate'
 import VueDefaultValue from 'vue-default-value'
-
+import VueSweetAlert from 'vue-sweetalert'
 import Vuex from 'vuex'
-Vue.use(Vuex)
-import store from './libs/store'
+
 
 Vue.use(VeeValidate)
 Vue.use(VueAxios, axios)
 Vue.use(VueDefaultValue)
+Vue.use(VueSweetAlert)
+Vue.use(Vuex)
+
+import store from './libs/store'
 
 Vue.config.productionTip = false
 

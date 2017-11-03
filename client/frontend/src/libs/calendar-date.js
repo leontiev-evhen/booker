@@ -1,12 +1,7 @@
 export default class CalendarDate {
 
 	constructor(year, month) {
-		if (year !== undefined) {
-			this.date = new Date(year, month);
-		} else {
-			this.date = new Date();
-		}
-	    
+		this.date = new Date(); 
 	}
 
 	getNameMonth (key) {

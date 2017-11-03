@@ -16,6 +16,7 @@ class EventsController extends Controller
 		'time_end'   => 'integer',
 	];
 
+    protected $params = ['id', 'month', 'year', 'room'];
 
     public function __construct ($params)
     {
@@ -24,34 +25,28 @@ class EventsController extends Controller
 
         if (!empty($params))
         {
-            if (isset($_GET['time_start'], $_GET['time_end'])) {
-                $this->time_start = (int)trim($_GET['time_start']);
-                $this->time_end = (int)trim($_GET['time_end']);
-            }
-
-            $param = explode('/', $params);
-            $this->id = isset($param[0]) ? (int)$param[0] : null;
+            $this->validateParams($params);
         }
     }
 
     public function getEvents ()
     {
-    	if (!empty($this->id))
+    	if (!empty($this->dataParam['id']))
         {       
             return $this->getEventById();
         }
 
-        $data = $this->model->getAll($this->time_start, $this->time_end);
+        $data = $this->model->getAll($this->dataParam['room'], $this->dataParam['month'], $this->dataParam['year']);
         if (!empty($data))
         {
             return $this->getServerAnswer(200, true, 'events successfully received', $data);
         }
-        return $this->getServerAnswer(500, false, 'Internal Server Error');
+        return $this->getServerAnswer(200, false, 'events not found');
     }
 
     public function getEventById ()
     {
-        $data = $this->model->getOne($this->id);
+        $data = $this->model->getOne($this->dataParam['id']);
         $data['status_orders'] = $this->status_model->getAll();
 
         if (!empty($data))
@@ -102,7 +97,7 @@ class EventsController extends Controller
 	{
 		if ($this->validate()) 
 		{
-			if ($this->model->updateEvent($this->data, $this->id))
+			if ($this->model->updateEvent($this->data, $this->dataParam['id']))
 			{
 				return $this->getServerAnswer(200, true, 'order status change successful');
 			}

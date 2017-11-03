@@ -36,7 +36,7 @@ export default {
 				let instance = this.axios.create({
 					baseURL: this.$parent.AJAX_URL
 				});
-				instance.defaults.headers.common['Authorization'] = user.access_token
+				instance.defaults.headers.common['Authorization'] = user.access_token;
 
 				this.axios.get(this.$parent.AJAX_URL + '/booker/client/api/auth')  
 				.then(function (response) {

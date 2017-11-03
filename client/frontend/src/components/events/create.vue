@@ -6,7 +6,7 @@
 				<p v-if="error" class="is-danger">{{error}}</p>
 				<div class="form-group">
 					<label for="text">1. Booked for:</label>
-					<select v-model="id_user" class="form-control" v-if="this.$store.admin">
+					<select v-model="id_user" class="form-control" v-if="this.$store.is_admin">
 						<option v-for="user in users" :value="user.id">{{user.name}}</option>
 					</select>
 					<input v-else type="text" class="form-control" :value="this.$parent.$parent.user.name" disabled>
@@ -110,6 +110,7 @@ export default {
 			day: 0,
 			hour_start: 0,
 			hour_end: 0,
+			users: [],
 			error: ''
 		}
   	},

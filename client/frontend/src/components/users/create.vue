@@ -5,7 +5,7 @@
 			<p v-if="error" class="is-danger">{{error}}</p>
 			<div class="form-group">
 			    <label for="text">Name:</label>
-			    <p :class="{ 'control': true }"><input v-model="name" v-validate="'required|alpha'" :class="{'input form-control': true, 'is-danger': errors.has('name') }"type="text" name="name"></p>
+			    <p :class="{ 'control': true }"><input v-model="name" v-validate="'required'" :class="{'input form-control': true, 'is-danger': errors.has('name') }"type="text" name="name"></p>
 				<span v-show="errors.has('name')" class="help is-danger">{{ errors.first('name') }}</span>
 			</div>
 			<div class="form-group">
@@ -69,11 +69,12 @@ export default {
 						}, config)  
 						.then((response) => {
 
-							if (response.status == 200) {
+							if (response.status == 201) {
 								if (!response.data.success) {
 									self.error = response.data.message
 								} else {
-									location.href = '/#/admin/users'
+									self.$swal(response.data.message);
+									self.$router.push('/users');
 								}
 							} else {
 								console.log(response.data.message)

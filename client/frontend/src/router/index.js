@@ -8,15 +8,13 @@ import Login from '@/components/Login'
 import Layout from '@/components/Layout'
 
 
-/*admin*/
-import Admin from '@/components/admin/dashboard/index'
+/*user*/
+import Users from '@/components/users/index'
+import UserEdit from '@/components/users/edit'
+import UserCreate from '@/components/users/create'
 
-import AdminUsers from '@/components/admin/users/index'
-import AdminUserEdit from '@/components/admin/users/edit'
-import AdminUserCreate from '@/components/admin/users/create'
-
-import AdminEventEdit from '@/components/admin/events/edit'
-import AdminEventCreate from '@/components/admin/events/create'
+import EventEdit from '@/components/events/edit'
+import EventCreate from '@/components/events/create'
 
 
 Vue.use(Router)
@@ -43,37 +41,32 @@ export default new Router({
 				component: Home,
 			},
 			{
-				path: '/admin',
-				name: 'Admin',
-				component: Admin,
+				path: '/users',
+				name: 'Users',
+				component: Users,
+            	beforeEnter: is_admin
 			},
 			{
-				path: '/admin/users',
-				name: 'AdminUsers',
-				component: AdminUsers,
-            beforeEnter: is_admin
+				path: '/user/create',
+				name: 'UserCreate',
+				component: UserCreate,
+            	beforeEnter: is_admin
 			},
 			{
-				path: '/admin/user/create',
-				name: 'AdminUserCreate',
-				component: AdminUserCreate,
-            beforeEnter: is_admin
+				path: '/user/edit/:id',
+				name: 'UserEdit',
+				component: UserEdit,
+            	beforeEnter: is_admin
 			},
 			{
-				path: '/admin/user/edit/:id',
-				name: 'AdminUserEdit',
-				component: AdminUserEdit,
-            beforeEnter: is_admin
+				path: '/event/create',
+				name: 'EventCreate',
+				component: EventCreate,
 			},
 			{
-				path: '/admin/event/create',
-				name: 'AdminEventCreate',
-				component: AdminEventCreate,
-			},
-			{
-				path: '/admin/event/edit/:id',
-				name: 'AdminEventEdit',
-				component: AdminEventEdit,
+				path: '/event/edit/:id',
+				name: 'EventEdit',
+				component: EventEdit,
 			},
 		]
     },

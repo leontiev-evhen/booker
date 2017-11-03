@@ -12,6 +12,7 @@ class UsersModel extends Model
         $sql = $this->select([
                 'id',
                 'name',
+                'email',
                 'id_role',
                 'create_at'])
             ->from(DB_PREFIX.$this->table)
@@ -125,6 +126,40 @@ class UsersModel extends Model
         if ($STH->execute())
         {
             return true;
+        }  
+        return false;
+    }
+
+    public function deleteUser ($id)
+    {
+        $sql = $this->select([
+                'id'])
+            ->from(DB_PREFIX.$this->table)
+            ->execute();
+        $sql = str_replace(["'<", ">'"], '', $sql);
+        
+        $STH = $this->connect->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+        $STH->execute();
+        if ($STH->rowCount() > 1)
+        {
+            $sql = $this->delete()
+                ->from(DB_PREFIX.$this->table)
+                ->where(['id' => '<?>'])
+                ->where(['id_role' => '<?>'], 'and', '!=')
+                ->limit(1)
+                ->execute();
+            $sql = str_replace(["'<", ">'"], '', $sql);
+
+            $STH = $this->connect->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+            $id_role = ROLE;
+            $STH->bindParam(1, $id);
+            $STH->bindParam(2, $id_role);
+
+            if ($STH->execute())
+            {
+                return true;
+            }  
+            return false;
         }  
         return false;
     }

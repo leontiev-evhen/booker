@@ -7,5 +7,5 @@ define('DB', 'booker');
 define('USER', 'root');
 define('PASSWORD', 'root');
 define('TYPE', '.json');
-define('ROLE', 2);
+define('ROLE', 1);
 define('DB_PREFIX', 'bk_');

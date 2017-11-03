@@ -2,13 +2,15 @@
 namespace libs\controllers;
 use libs\core\Controller;
 use libs\models\UsersModel;
+use libs\models\EventsModel;
 
 class UsersController extends Controller
 {
 
     protected $model;
+    protected $model_event;
     protected $orders_model;
-    private $headers;
+    private $authHeader;
 
     protected $rules = [
         'name'      => 'string',
@@ -17,37 +19,47 @@ class UsersController extends Controller
         'id_role'   => 'integer',
     ];
 
+    protected $params = ['id'];
+
     public function __construct ($params)
     {
         $this->model = new UsersModel();
+        $this->model_event = new EventsModel();
 
-        $this->headers = getallheaders();
+        $headers = getallheaders();
+        $this->authHeader = isset($headers['Authorization']) ? $headers['Authorization'] : false;
 
         if ($params)
         {
-            $param = explode('/', $params);
-            $this->id = (int)$param[0];
+            $this->validateParams($params);
         }
     }
 
     public function getUsers ()
     {
-        if (!empty($this->id))
-        {       
-            return $this->getUserById();
-        }
-
-        $data = $this->model->getAllUsers();
-        if (!empty($data))
+        if ($this->checkAuth($this->authHeader))
         {
-            return $this->getServerAnswer(200, true, 'users successfully received', $data);
+            if (!empty($this->dataParam['id']))
+            {       
+                return $this->getUserById();
+            }
+
+            $data = $this->model->getAllUsers();
+            if (!empty($data))
+            {
+                return $this->getServerAnswer(200, true, 'users successfully received', $data);
+            }
+            return $this->getServerAnswer(500, false, 'Internal Server Error');
+        } 
+        else
+        {
+            return $this->getServerAnswer(401, false, 'Unauthorized');
         }
-        return $this->getServerAnswer(500, false, 'Internal Server Error');
     }
 
-    public function getUserById ()
+    private function getUserById ()
     {
-        $data = $this->model->getOneUser($this->id);
+        $data = $this->model->getOneUser($this->dataParam['id']);
         if (!empty($data))
         {
             return $this->getServerAnswer(200, true, 'user successfully received', $data);
@@ -60,40 +72,83 @@ class UsersController extends Controller
 
     public function postUsers () 
     {
-        if ($this->validate()) 
+        if ($this->checkAuth($this->authHeader))
         {
-            $password =  base64_decode($this->data->password);
-            $this->data->password = password_hash($password, PASSWORD_DEFAULT);
-   
-            $aData = $this->model->createUser($this->data);
-            if ($aData['result'])
+            if ($this->validate()) 
             {
-                return $this->getServerAnswer(200, $aData['result'], $aData['message']);
+                $password =  base64_decode($this->data->password);
+                $this->data->password = password_hash($password, PASSWORD_DEFAULT);
+       
+                $aData = $this->model->createUser($this->data);
+                if ($aData['result'])
+                {
+                    return $this->getServerAnswer(201, $aData['result'], $aData['message']);
+                }
+                else
+                {
+                    return $this->getServerAnswer(200, $aData['result'], $aData['message']);
+                }
             }
-            else
-            {
-                return $this->getServerAnswer(200, $aData['result'], $aData['message']);
-            }
-        }
 
-        return $this->getServerAnswer(400, false, 'Bad Request');
+            return $this->getServerAnswer(400, false, 'Bad Request');
+        }
+        else
+        {
+            return $this->getServerAnswer(401, false, 'Unauthorized');
+        }
     }
 
     public function putUsers ()
     {
-        if ($this->validate() && $this->id) 
+        if ($this->checkAuth($this->authHeader))
         {
-            if ($this->model->updateUser($this->data, $this->id))
+            if ($this->validate() && $this->dataParam['id']) 
             {
-                return $this->getServerAnswer(200, true, 'user update successful');
+                if ($this->model->updateUser($this->data, $this->dataParam['id']))
+                {
+                    return $this->getServerAnswer(200, true, 'user update successful');
+                }
+                else
+                {
+                    return $this->getServerAnswer(200, false, 'some error');
+                }
             }
-            else
-            {
-                return $this->getServerAnswer(200, false, 'some error');
-            }
-        }
 
-        return $this->getServerAnswer(400, false, 'Bad Request');
+            return $this->getServerAnswer(400, false, 'Bad Request');
+        }
+        else
+        {
+            return $this->getServerAnswer(401, false, 'Unauthorized');
+        }
+    }
+
+    public function deleteUsers ()
+    {
+        if ($this->checkAuth($this->authHeader))
+        {
+            if ($this->dataParam['id']) 
+            {
+                if ($this->model->deleteUser($this->dataParam['id']) && $this->model_event->deleteUserEvent($this->dataParam['id']))
+                {
+                    return $this->getServerAnswer(200, true, 'user delete successful');
+                }
+                else
+                {
+                    return $this->getServerAnswer(200, false, 'error');
+                }
+            }
+
+            return $this->getServerAnswer(400, false, 'Bad Request');
+        }
+        else
+        {
+            return $this->getServerAnswer(401, false, 'Unauthorized');
+        }
+    }
+
+    private function checkAuth ($access_token)
+    {
+        return $this->model->checkAuth($access_token);
     }
 
 }

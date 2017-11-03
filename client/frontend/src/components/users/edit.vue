@@ -51,7 +51,7 @@ export default {
 				}
 			}
 		
-			this.axios.put(this.$parent.$parent.AJAX_URL + '/booker/client/api/users/' + this.$route.params.id, {
+			this.axios.put(this.$parent.$parent.AJAX_URL + '/booker/client/api/users/id/' + this.$route.params.id, {
 					name: (this.name) ? this.name : this.user.name,
 					email: (this.email) ? this.email : this.user.email,
 					id_role: (this.id_role) ? +this.id_role : +this.user.id_role,
@@ -62,7 +62,7 @@ export default {
 						if (!response.data.success) {
 							console.log(response.data.message)
 						} else {
-							location.href = '/#/admin/users'
+							location.href = '/#/users'
 						}
 					} else {
 						console.log(response.data.message)
@@ -72,7 +72,7 @@ export default {
   	},
     created() {
    
-    this.axios.get(this.$parent.$parent.AJAX_URL + '/booker/client/api/users/' + this.$route.params.id).then((response) => {
+    this.axios.get(this.$parent.$parent.AJAX_URL + '/booker/client/api/users/id/' + this.$route.params.id).then((response) => {
 
         if (response.status == 200) {
             if (response.data.status) {

@@ -24,6 +24,10 @@ footer {
   height:100px; 
 }
 
+h3 {
+  text-align: center;
+}
+
 .main {
   -webkit-background-size: cover;
   -moz-background-size: cover;
@@ -51,8 +55,6 @@ font-family: 'Roboto', sans-serif;
 td.fc-today {
   background:#FFF !important;
   position: relative;
-
-
 }
 
 .fc-first th{
@@ -989,4 +991,14 @@ table.fc-header{
     background-image: none;
     border: 1px solid #ccc;
     border-radius: 4px;
+}
+
+.list_rooms {
+  padding: 0;
+}
+
+.list_rooms li {
+  list-style-type: none;
+  font-size: 16px;
+  text-align: center;
 }

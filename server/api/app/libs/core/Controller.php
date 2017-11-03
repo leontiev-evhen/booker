@@ -6,11 +6,32 @@ class Controller
 {
     protected $model;
     protected $rules;
+    protected $params;
+    protected $dataParam;
     protected $data;
 
     public function __construct ()
     {
        
+    }
+
+    protected function validateParams ($data)
+    {
+        $param = explode('/', $data);
+        $arrData = array_chunk($param , 2);
+
+        foreach ($arrData as $item) 
+        {
+            if (in_array($item[0], $this->params) && !empty($item[1])) 
+            {
+                $this->dataParam[$item[0]] = trim((int)$item[1]);
+            } 
+            else
+            {
+                throw new Exception('Invalid data');
+            }
+        }
+        return $this->dataParam;
     }
 
     protected function validate ()
@@ -39,6 +60,7 @@ class Controller
 
     protected function getServerAnswer ($code, $success, $message, $data = [])
     {
+
     	header('HTTP/1.0 '.$code, $message);
         
     	return ['status' => $code, 'success' => $success, 'message' => $message, 'data' => $data];

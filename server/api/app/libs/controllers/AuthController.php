@@ -46,7 +46,7 @@ class AuthController extends Controller
             {
                 if (password_verify($password, $aData['password'])) {
 
-                    $aData = array_unique($aData);
+                    //$aData = array_unique($aData);
                     unset($aData['password']);
 
                     $aData['access_token'] = $this->createToken($aData['id']);

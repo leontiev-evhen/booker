@@ -6,7 +6,7 @@
 	  		 Users
 	  	</h3>
 	  	<div>
-	  		<a href="/#/admin/user/create" class="btn btn-primary">Add</a>
+	  		<a href="/#/user/create" class="btn btn-primary">Add</a>
 	  	</div>
   		<div class="list-group">
 			<p class="is-danger">{{error}}</p>
@@ -20,17 +20,20 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr v-for="(user, key) in users">
+					<tr v-for="(user, key) in users" :data-id = "user.id">
 					  	<td>{{key+1}}</td>
-					  	<td>{{user.name}}</td>
+					  	<td><a :href="'mailto:' + user.email">{{user.name}}</a></td>
 					  	<td>{{user.create_at}}</td>
 					  	<td>
 					  		<i v-if="user.id_role == 1" class="fa fa-user" aria-hidden="true"></i>
 					  	</td>
 					  	<td>
-						  	<a :href="'/#/admin/user/edit/' + user.id" class="btn btn-warning">
+						  	<a :href="'/#/user/edit/' + user.id" class="btn btn-warning">
 						  		<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
 						  	</a>
+						  	<button v-if="user.id_role != 1" type="button" class="btn btn-danger" @click="remove(user.id)">
+								<i class="fa fa-trash-o" aria-hidden="true"></i>
+							</button>
 						</td>
 					</tr>
 				</tbody>
@@ -51,7 +54,7 @@ export default {
 		}
   	},
     created() {
-
+    	
 		this.axios.get(this.$parent.$parent.AJAX_URL + '/booker/client/api/users').then((response) => {
 
 			if (response.status == 200) {
@@ -64,6 +67,30 @@ export default {
 				console.log(response.data.message)
 			}
 		})
+  	},
+  	methods: {
+ 		remove: function(id) {
+
+			let self = this;
+ 		
+ 				
+ 			let answer = confirm('Are you sure?')
+ 			if (answer) {
+ 				this.axios.delete(this.$parent.$parent.AJAX_URL + '/booker/client/api/users/id/' + id).then((response) => {
+
+			        if (response.status == 200) {
+			            if (response.data.success) {
+			            	self.$swal(response.data.message);
+			              	$('tr[data-id=' + id + ']').remove();
+			            } else {
+			              	this.error = response.data.message
+			            }
+			        } else {
+			            console.log(response.data.message)
+			        }
+		    	})
+ 			}
+ 		}
   	},
 }
 </script>

@@ -15,8 +15,12 @@
 									<td class="fc-header-center">
 										{{room_name}}
 									</td>
+
 									<td class="fc-header-right">
-											<span @click="changeFormat" class="fc-button fc-button-prev fc-state-default format">
+										<span @click="changeTimeFormat" class="fc-button fc-button-prev fc-state-default format">
+											Time format {{this.time_format}}
+										</span>
+										<span @click="changeFormat" class="fc-button fc-button-prev fc-state-default format">
 											Format <img :src="'/static/images/' + format + '.png'" class="format_img">
 										</span>
 										<span @click="changeMonth(-1)" class="fc-button fc-button-prev fc-state-default fc-corner-left">
@@ -30,7 +34,7 @@
 								</tr>
 							</tbody>
 						</table>
-						<month :monthArr="dayArr" :format="format"></month>
+						<month :monthArr="calendar_days" :format="format"></month>
 		   		</div>
 		      </div>
 
@@ -39,21 +43,21 @@
 
 	      <div class="col-md-3">
 	      	<center class="mt-15">
-					<a href="/#/admin/event/create" class="btn btn-brown">
+					<a href="/#/event/create" class="btn btn-brown">
 						Book it 
 						<i class="fa fa-plus-circle" aria-hidden="true"></i>
 					</a>
-					<a v-if="this.$store.is_admin" href="/#/admin/users" class="btn btn-brown">
+					<a v-if="this.$store.is_admin" href="/#/users" class="btn btn-brown">
 						Employee list
 						<i class="fa fa-list" aria-hidden="true"></i>
 					</a>
-					<h3>List rooms</h3>
-					<ul>
-						<li v-for="room in rooms">
-							<a href="#" @click="getEvents(room.id, room.name)">{{room.name}}</a>
-						</li>
-					</ul>
 				</center>
+				<h3>List rooms</h3>
+				<ul class="list_rooms">
+					<li v-for="room in rooms">
+						<a href="#" @click="getRoom(room.id, room.name)">{{room.name}}</a>
+					</li>
+				</ul>
 				
 			</div>
 		</div>
@@ -69,11 +73,12 @@ export default {
   	data () {
     	return {
 	      month:'',
-	      dayArr:[],
+	      calendar_days:[],
 	      DATE: new CalendarDate(),
 	      year: '',
-	      monthNumber: '',
+	      month_num: '',
 	      format:'ua',
+	      time_format: this.$store.time_format,
 	      rooms: '',
 	      room_name: '',
 	      room_id: '',
@@ -82,8 +87,8 @@ export default {
   	},
   	created:function() {
   		this.year = this.DATE.getFullYear();
-  		this.monthNumber = this.DATE.getMonth();
-    	this.getMonthArr(this.year, this.monthNumber)
+  		this.month_num = this.DATE.getMonth();
+    	this.getMonthArr(this.year, this.month_num)
 
     	//get all rooms
     	this.axios.get(this.$parent.$parent.AJAX_URL + '/booker/client/api/rooms').then((response) => {
@@ -97,27 +102,25 @@ export default {
 			}
 		})
   	},
-  	components:{
-    	Month
-  	},
 	methods: {
-    	getMonthArr(year, month, format = 'ua' ){
+    	getMonthArr: function (year, month, format = 'ua' ) {
 		
-			  this.dayArr = [];
+			  this.calendar_days = [];
 	
-			  let date = new CalendarDate(year, month);
+			  let date = new Date(year, month);
 			  
 			  this.month = this.DATE.getNameMonth(month);
 			  let clearDay = 0; //количество дней, которые нужно пропустить
-			  this.dayArr[0] = [];
+			  this.calendar_days[0] = [];
 			  for (let i = 0; i < this.getDay(date,format); i++) {
-				  this.dayArr[0].push({});
+				  this.calendar_days[0].push({});
 				  clearDay ++
 			  }
 			  // ячейки календаря с датами
 			  let row = 0;
 			 
 			  let i = 1;
+
 			  while (date.getMonth() == month) {
 				let current = false;  
 				let events = [];
@@ -136,19 +139,20 @@ export default {
 						}
 					  }
 				  }
-				  this.dayArr[row].push({data: date.getDate(), current: current, events: events})
+				  this.calendar_days[row].push({data: date.getDate(), current: current, events: events})
 				if (this.getDay(date,format) % 7 == 6) { // вс, последний день - перевод строки
 				  row ++
-				  this.dayArr[row] = []
+				  this.calendar_days[row] = []
 				}
 				date.setDate(date.getDate() + 1);
 				i++;
 			  }
-			  return this.dayArr
+			  
+			  return this.calendar_days
       
 		},
 
-	   getDay(date, format) { // получить номер дня недели, от 0(пн) до 6(вс)
+	   getDay: function (date, format) { // получить номер дня недели, от 0(пн) до 6(вс)
          var day = date.getDay();
          if(format == 'ua') {
            if (day == 0) day = 7;
@@ -158,66 +162,83 @@ export default {
 	   },
 
 
-		changeMonth (operation) {
-			this.monthNumber += operation
+		changeMonth: function (operation) {
+			this.month_num += operation
 	      
-			if (this.monthNumber < 0){
-				this.monthNumber = 11
+			if (this.month_num < 0) {
+				this.month_num = 11
 				this.year--
 			}
 
-			if (this.monthNumber > 11) {
-				this.monthNumber = 0
+			if (this.month_num > 11) {
+				this.month_num = 0
 				this.year++
 			}
 			
-			//this.getEvents(this.room_id, this.room_name);
-			this.dayArr = this.getMonthArr(this.year, this.monthNumber)
-	   },
+			this.getEvents();
+			this.calendar_days = this.getMonthArr(this.year, this.month_num)
+	    },
 
-	   changeFormat() {
-	      if(this.format == 'ua'){
+	   changeFormat: function () {
+	      if (this.format == 'ua') {
 	        this.format = 'usa'
-	        this.dayArr = this.getMonthArr(this.year, this.monthNumber,'usa')
-	      }else{
+	        this.calendar_days = this.getMonthArr(this.year, this.month_num,'usa')
+	      } else {
 	        this.format = 'ua'
-	        this.dayArr = this.getMonthArr(this.year, this.monthNumber,'ua')
+	        this.calendar_days = this.getMonthArr(this.year, this.month_num,'ua')
 	      }
+	    },
+
+	    changeTimeFormat: function () {
+
+	      	if (this.time_format == 24) {
+	       		this.time_format = 12;
+	       		this.$store.time_format = 12;
+	      	} else {
+	        	this.time_format = 24;
+	        	this.$store.time_format = 24;
+	     	}
+	   	},
+
+	   getRoom: function (id, name) {
+			this.room_name = name;
+	   		this.room_id = id;
+	   		this.getEvents();
 	   },
 
-	   getEvents: function (id, name) {
+	   getEvents: function () {
 	
-	   		this.room_name = name;
-	   		this.room_id = id;
+			//var time_end = this.DATE.toTimestamp((this.monthNumber + 1 )+"/" + this.DATE.getLastDayMonth(this.year, this.monthNumber) + "/"+this.year + " " + this.DATE.getHours() + ":" + this.DATE.getMinutes());
 
-			var time_end = this.DATE.toTimestamp((this.monthNumber + 1 )+"/" + this.DATE.getLastDayMonth(this.year, this.monthNumber) + "/"+this.year + " " + this.DATE.getHours() + ":" + this.DATE.getMinutes());
-
-			var time_start = this.DATE.toTimestamp((this.monthNumber + 1 )+"/01/"+this.year + " " + this.DATE.getHours() + ":" + this.DATE.getMinutes());
+			//var time_start = this.DATE.toTimestamp((this.monthNumber + 1 )+"/01/"+this.year + " " + this.DATE.getHours() + ":" + this.DATE.getMinutes());
 
 
 	   		//get all events
-    		this.axios.get(this.$parent.$parent.AJAX_URL + '/booker/client/api/events/?time_start=' + time_start + '&time_end=' + time_end).then((response) => {
+    		this.axios.get(this.$parent.$parent.AJAX_URL + '/booker/client/api/events/room/' + this.room_id + '/month/' + this.month_num + '/year/' + this.year).then((response) => {
 
 				if (response.status == 200) {
+
 					if (response.data.success) {
-						let data_events = response.data.data;
 						this.events = [];
-						for(var i in data_events) {
-							if (data_events[i].id_room == id) {
-								this.events.push(data_events[i]);
-							}
-						}
-						this.dayArr = this.getMonthArr(this.year, this.monthNumber)
-					} 
+						this.events = response.data.data;
+						
+						this.getMonthArr(this.year, this.month_num);
+					} else {
+						this.events = [];
+						this.getMonthArr(this.year, this.month_num);
+					}
 				} else {
-					console.log(response.data.message)
+					console.log(response.data.success)
 				}
 			});
 
 
 	   }
 
-  	}
+  	},
+  	components:{
+    	Month
+  	},
 }
 </script>
 
