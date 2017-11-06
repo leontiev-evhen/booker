@@ -105,29 +105,36 @@ class UsersModel extends Model
 
     public function updateUser ($data, $id)
     {
-        $sql = $this->update()
-            ->from(DB_PREFIX.$this->table)
-            ->set([
-                'name' => '<?>',
-                'email' => '<?>',
-                'id_role' => '<?>'])
-            ->where(['id' => '<?>'])
-			->limit(1)
-            ->execute();
-        $sql = str_replace(["'<", ">'"], '', $sql);
-        
-        $STH = $this->connect->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
-        
-        $STH->bindParam(1, $data->name);
-        $STH->bindParam(2, $data->email);
-        $STH->bindParam(3, $data->id_role);
-        $STH->bindParam(4, $id);
+		if (!$this->checkUniqueEmail($data->email))
+    	{
+			$sql = $this->update()
+				->from(DB_PREFIX.$this->table)
+				->set([
+					'name' => '<?>',
+					'email' => '<?>',
+					'id_role' => '<?>'])
+				->where(['id' => '<?>'])
+				->limit(1)
+				->execute();
+			$sql = str_replace(["'<", ">'"], '', $sql);
+			
+			$STH = $this->connect->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+			
+			$STH->bindParam(1, $data->name);
+			$STH->bindParam(2, $data->email);
+			$STH->bindParam(3, $data->id_role);
+			$STH->bindParam(4, $id);
 
-        if ($STH->execute())
-        {
-            return ['result' => true, 'message' => 'user update successful'];
-        }  
-        return ['result' => false, 'message' => 'error'];
+			if ($STH->execute())
+			{
+				return ['result' => true, 'message' => 'user update successful'];
+			}  
+			return ['result' => false, 'message' => 'error'];
+		}
+		else
+    	{
+    		return ['result' => false, 'message' => 'Email already exist'];
+    	}
     }
 
     public function deleteUser ($id)

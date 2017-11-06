@@ -12,7 +12,7 @@
                <tbody>
                   <tr v-for="week in months">
                 
-                     <td  v-for="day in week" class="fc-mon fc-widget-content fc-past" :class="{ 'fc-day': day.data}">
+                     <td  v-for="day in week" class="fc-mon fc-widget-content fc-past" :class="{ 'fc-day': day.num}">
 						            <day :day="day"></day> 
                      </td>
                   </tr>

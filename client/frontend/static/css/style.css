@@ -204,7 +204,7 @@ html .fc,
 
     /* <th>, usually */
 .fc-widget-content {  /* <td>, usually */
-  border: 1px solid #e5e5e5;
+  border: 1px solid #88592a;
   }
 .fc-widget-header{
     border-bottom: 1px solid #EEE; 
@@ -464,6 +464,7 @@ border-top-right-radius: 3px;
 
 table.fc-border-separate {
   border-collapse: separate;
+  border-spacing: 1px 1px;
   }
   
 .fc-border-separate th,
@@ -723,7 +724,7 @@ table.fc-header{
 }
 
 .fc-day:hover .fc-day-number{
-    background-color: #B8B8B8;
+    background-color: #dfbc9a;
     border-radius: 50%;
     color: #FFFFFF;
     transition: background-color 0.2s;
@@ -739,22 +740,17 @@ table.fc-header{
     padding-right: 10px;
 }
 
-/*!
- * FullCalendar v1.6.4 Print Stylesheet
- * Docs & License: http://arshaw.com/fullcalendar/
- * (c) 2013 Adam Shaw
- */
-
-/*
- * Include this stylesheet on your page to get a more printer-friendly calendar.
- * When including this stylesheet, use the media='print' attribute of the <link> tag.
- * Make sure to include this stylesheet IN ADDITION to the regular fullcalendar.css.
- */
+.fc-past {
+	background: #e4c19f;
+}
  
  
  /* Events
 -----------------------------------------------------*/
- 
+ .fc-border-separate td {
+	 width: 120px;
+	 height: 120px;
+ }
 .fc-event {
   background: #fff !important;
   color: #000 !important;
@@ -812,10 +808,6 @@ table.fc-header{
     margin: 0 auto;
     background-color: #FFFFFF;
     border-radius: 6px;
-}
-
-.cell {
-  min-height: 100px;
 }
 
 .today {
@@ -1003,8 +995,34 @@ table.fc-header{
   list-style-type: none;
   font-size: 16px;
   text-align: center;
+  padding-top: 10px;
+}
+
+.list_rooms a {
+  color: #000;
 }
 
 .swal2-modal .swal2-content {
   font-size: 17px !important;
+}
+
+.events_list {
+	padding:0;
+	text-align: center;
+    height: 80px;
+    overflow: auto;
+	font-size: 14px;
+}
+
+body::-webkit-scrollbar {
+    width: 0.2em;
+}
+ 
+body::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+}
+ 
+body::-webkit-scrollbar-thumb {
+  background-color: red;
+  outline: 1px solid red;
 }

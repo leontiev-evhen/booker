@@ -32,7 +32,6 @@ export default new Router({
   routes: [
     {
 		path: '/',
-		name: 'Layout',
 		component: Layout,
 		children: [
 			{

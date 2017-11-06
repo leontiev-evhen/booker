@@ -86,7 +86,7 @@ class UsersController extends Controller
                 }
                 else
                 {
-                    return $this->getServerAnswer(200, $aData['result'], $aData['message']);
+                    return $this->getServerAnswer(201, $aData['result'], $aData['message']);
                 }
             }
 

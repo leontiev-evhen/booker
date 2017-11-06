@@ -18,7 +18,7 @@
 
 									<td class="fc-header-right">
 										<span @click="changeTimeFormat" class="fc-button fc-button-prev fc-state-default format">
-											Time format {{this.time_format}}
+											Time format {{$store.time_format}}
 										</span>
 										<span @click="changeFormat" class="fc-button fc-button-prev fc-state-default format">
 											Format <img :src="'/static/images/' + format + '.png'" class="format_img">
@@ -55,7 +55,7 @@
 				<h3>List rooms</h3>
 				<ul class="list_rooms">
 					<li v-for="room in rooms">
-						<a href="#" @click="getRoom(room.id, room.name)">{{room.name}}</a>
+						<i class="fa fa-briefcase" aria-hidden="true"></i> <a href="#" @click="getRoom(room.id, room.name)">{{room.name}}</a>
 					</li>
 				</ul>
 				
@@ -113,13 +113,13 @@ export default {
 			  let date = new Date(year, month);
 			  
 			  this.month = this.DATE.getNameMonth(month);
-			  let clearDay = 0; //количество дней, которые нужно пропустить
+			  let clearDay = 0; 
 			  this.calendar_days[0] = [];
 			  for (let i = 0; i < this.getDay(date,format); i++) {
 				  this.calendar_days[0].push({});
 				  clearDay ++
 			  }
-			  // ячейки календаря с датами
+	
 			  let row = 0;
 			 
 			  let i = 1;
@@ -143,7 +143,7 @@ export default {
 					  }
 				  }
 				  this.calendar_days[row].push({num: date.getDate(), current: current, events: events})
-				if (this.getDay(date,format) % 7 == 6) { // вс, последний день - перевод строки
+				if (this.getDay(date,format) % 7 == 6) { 
 				  row ++
 				  this.calendar_days[row] = []
 				}
@@ -155,7 +155,7 @@ export default {
       
 		},
 
-	   getDay: function (date, format) { // получить номер дня недели, от 0(пн) до 6(вс)
+	   getDay: function (date, format) {
          var day = date.getDay();
          if(format == 'ua') {
            if (day == 0) day = 7;
@@ -194,12 +194,14 @@ export default {
 
 	    changeTimeFormat: function () {
 
-	      	if (this.time_format == 24) {
-	       		this.time_format = 12;
+	      	if (localStorage['time_format'] == 24) {
+	       		//this.time_format = 12;
+				this.$store.time_format = 12;
 	       		localStorage['time_format'] = 12;
 	       		this.calendar_days = this.getMonthArr(this.year, this.month_num, this.format);
 	      	} else {
-	        	this.time_format = 24;
+	        	//this.time_format = 24;
+				this.$store.time_format = 24;
 	        	localStorage['time_format'] = 24;
 	        	this.calendar_days = this.getMonthArr(this.year, this.month_num, this.format);
 	     	}

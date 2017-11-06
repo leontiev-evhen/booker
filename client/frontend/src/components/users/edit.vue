@@ -10,7 +10,7 @@
 			</div>
 			<div class="form-group">
 			    <label for="text">Email:</label>
-				<p :class="{ 'control': true }"><input v-model="email" v-validate="'required|alpha'" :class="{'input form-control': true, 'is-danger': errors.has('email') }" type="text" name="email" v-default-value="user.email"></p>
+				<p :class="{ 'control': true }"><input v-model="email" v-validate="'required'" :class="{'input form-control': true, 'is-danger': errors.has('email') }" type="text" name="email" v-default-value="user.email"></p>
 				<span v-show="errors.has('email')" class="help is-danger">{{ errors.first('email') }}</span>
 			</div>
 			<div class="form-group">

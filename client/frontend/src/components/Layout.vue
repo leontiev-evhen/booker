@@ -41,10 +41,12 @@ export default {
 
 				this.axios.get(this.$parent.AJAX_URL + '/booker/client/api/auth')  
 				.then(function (response) {
+		
 				if (response.status == 200) {
 					if (!response.data.success) {
 						self.$parent.logout();
 					} else {
+	
 						if (response.data.data.id_role == 1) {
 		            		self.$store.is_admin = true;
 		            	}
