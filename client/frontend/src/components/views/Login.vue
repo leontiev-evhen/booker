@@ -51,6 +51,7 @@
 			            	}
 
 			              	localStorage.setItem('profile', JSON.stringify(response.data.data));
+			              	localStorage.setItem('time_format', this.$store.time_format);
 			              	self.$emit('login');
 			              	self.$router.push('/');
 

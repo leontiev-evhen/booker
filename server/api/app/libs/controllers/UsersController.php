@@ -104,13 +104,14 @@ class UsersController extends Controller
         {
             if ($this->validate() && $this->dataParam['id']) 
             {
-                if ($this->model->updateUser($this->data, $this->dataParam['id']))
+                $data = $this->model->updateUser($this->data, $this->dataParam['id']);
+                if ($data['result'])
                 {
-                    return $this->getServerAnswer(200, true, 'user update successful');
+                    return $this->getServerAnswer(200, $data['result'], $data['message']);
                 }
                 else
                 {
-                    return $this->getServerAnswer(200, false, 'some error');
+                    return $this->getServerAnswer(200, $data['result'], $data['message']);
                 }
             }
 
@@ -134,7 +135,7 @@ class UsersController extends Controller
                 }
                 else
                 {
-                    return $this->getServerAnswer(200, false, 'error');
+                    return $this->getServerAnswer(200, false, 'The system must have at least one admin');
                 }
             }
 

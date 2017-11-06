@@ -1,6 +1,7 @@
 <template>
   	<div class="edit">
 	  	<h3 class="my-4"><i class="fa fa-user" aria-hidden="true"></i> Edit user</h3>
+	  	<p class="is-danger">{{error}}</p>
 		<form @submit.prevent="edit">
 			<div class="form-group">
 			    <label for="text">Name:</label>
@@ -36,6 +37,7 @@ export default {
       		name: '',
 			email: '',
 			id_role: 0,
+			error: ''
 		}
   	},
  	methods: {
@@ -44,7 +46,7 @@ export default {
  			this.id_role = event.target.value
  		},
  		edit: function() {
-	
+			let self = this;
 			let config = {
 				headers: {
 					'Content-Type' : 'application/x-www-form-urlencoded; charset=UTF-8'
@@ -60,9 +62,18 @@ export default {
 
 					if (response.status == 200) {
 						if (!response.data.success) {
-							console.log(response.data.message)
+								self.$swal(
+									'Warning!',
+    								response.data.message,
+    								'warning'
+    							);
 						} else {
-							location.href = '/#/users'
+								self.$swal(
+									'Success!',
+    								response.data.message,
+    								'success'
+    							);
+							self.$router.push('/users');
 						}
 					} else {
 						console.log(response.data.message)

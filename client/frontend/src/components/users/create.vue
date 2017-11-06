@@ -73,7 +73,11 @@ export default {
 								if (!response.data.success) {
 									self.error = response.data.message
 								} else {
-									self.$swal(response.data.message);
+									self.$swal(
+										'Success!',
+    									response.data.message,
+    									'success'
+    								);
 									self.$router.push('/users');
 								}
 							} else {

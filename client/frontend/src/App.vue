@@ -22,6 +22,7 @@ export default {
         },
         logout: function() {
             delete localStorage["profile"];
+            this.$store.is_admin = false;
             this.$router.push('/login');
         }
     },

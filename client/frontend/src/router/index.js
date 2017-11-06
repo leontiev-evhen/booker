@@ -3,8 +3,8 @@ import Router from 'vue-router'
 import store from '../libs/store'
 
 import PageNotFound from '@/components/PageNotFound'
-import Home from '@/components/Home'
-import Login from '@/components/Login'
+import Home from '@/components/views/Home'
+import Login from '@/components/views/Login'
 import Layout from '@/components/Layout'
 
 
@@ -50,7 +50,7 @@ export default new Router({
 				path: '/user/create',
 				name: 'UserCreate',
 				component: UserCreate,
-            	//beforeEnter: is_admin
+            	beforeEnter: is_admin
 			},
 			{
 				path: '/user/edit/:id',
@@ -59,7 +59,7 @@ export default new Router({
             	beforeEnter: is_admin
 			},
 			{
-				path: '/event/create',
+				path: '/event/create/room/:id',
 				name: 'EventCreate',
 				component: EventCreate,
 			},

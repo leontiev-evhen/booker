@@ -72,24 +72,41 @@ export default {
  		remove: function(id) {
 
 			let self = this;
- 		
- 				
- 			let answer = confirm('Are you sure?')
- 			if (answer) {
- 				this.axios.delete(this.$parent.$parent.AJAX_URL + '/booker/client/api/users/id/' + id).then((response) => {
+ 			this.$swal({
+			  title: 'Are you sure?',
+			  text: "You won't be able to revert this!",
+			  type: 'warning',
+			  showCancelButton: true,
+			  confirmButtonColor: '#3085d6',
+			  cancelButtonColor: '#d33',
+			  confirmButtonText: 'Yes, delete it!'
+			}).then(function () {
+			  self.axios.delete(self.$parent.$parent.AJAX_URL + '/booker/client/api/users/id/' + id).then((response) => {
 
 			        if (response.status == 200) {
 			            if (response.data.success) {
-			            	self.$swal(response.data.message);
+			            	self.$swal(    
+			            		'Deleted!',
+							    'User has been deleted.',
+							    'success'
+							);
 			              	$('tr[data-id=' + id + ']').remove();
 			            } else {
-			              	this.error = response.data.message
+			              	self.error = response.data.message
+			              	self.$swal(    
+			            		'Error!',
+							    response.data.message,
+							    'error'
+							);
 			            }
 			        } else {
 			            console.log(response.data.message)
 			        }
 		    	})
- 			}
+			}, function (dismiss) {
+			
+			});
+
  		}
   	},
 }

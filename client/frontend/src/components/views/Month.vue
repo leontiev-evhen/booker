@@ -10,10 +10,10 @@
                     </tr>
                   </thead>
                <tbody>
-                  <tr v-for="week in monthArr">
+                  <tr v-for="week in months">
                 
                      <td  v-for="day in week" class="fc-mon fc-widget-content fc-past" :class="{ 'fc-day': day.data}">
-						<day :day="day"></day> 
+						            <day :day="day"></day> 
                      </td>
                   </tr>
                </tbody>
@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import CalendarDate from '../libs/calendar-date'
+
 import Day from './Day'
 export default {
 	name: 'month',
@@ -34,7 +34,7 @@ export default {
 			daysTextRu:['Mn', 'Tu', 'We', 'Th', 'Fr', 'St', 'Sn']
 		}
 	},
-	props:['monthArr','format'],
+	props:['months', 'format'],
 	components: {
 		Day
 	}

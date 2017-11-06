@@ -23,7 +23,8 @@ export default {
 	name: 'layout',
 	data() {
 		return {
-			name: this.$parent.user ? this.$parent.user.name : ''
+			name: this.$parent.user ? this.$parent.user.name : '',
+			time_format: 0
 		}
 	},
   	created() {
@@ -43,6 +44,10 @@ export default {
 				if (response.status == 200) {
 					if (!response.data.success) {
 						self.$parent.logout();
+					} else {
+						if (response.data.data.id_role == 1) {
+		            		self.$store.is_admin = true;
+		            	}
 					}
 				} else {
 					console.log(response.data.message);
@@ -60,12 +65,12 @@ export default {
   		isJson: function (str) {
 		   try {
 		        JSON.parse(str);
-		   } 	catch (e) {
+		    } 	catch (e) {
 		      	return false;
-		   }
+		    }
 		    	return true;
 		},
-		login: function() {
+		login: function () {
 	      this.$emit('login')
 	   },
 	   logout: function() {

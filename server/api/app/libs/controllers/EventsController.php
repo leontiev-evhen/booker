@@ -2,18 +2,26 @@
 namespace libs\controllers;
 use libs\core\Controller;
 use libs\models\EventsModel;
+use libs\models\UsersModel;
 use \Exception;
 
 class EventsController extends Controller
 {
 	protected $model;
 	private $headers;
-	private $time_start;
-	private $time_end;
+	private $authHeader;
+
 
 	protected $rules = [
-        'time_start' => 'integer',
-		'time_end'   => 'integer',
+        'time_start'     => 'integer',
+		'time_end'       => 'integer',
+        'id_user'        => 'integer',
+        'id_room'        => 'integer',
+        'description'    => 'string',
+        'recurring'      => 'integer',
+        'time_recurring' => 'string',
+        'repeat'         => 'integer',
+        'parent_id'      => 'integer'
 	];
 
     protected $params = ['id', 'month', 'year', 'room'];
@@ -21,7 +29,9 @@ class EventsController extends Controller
     public function __construct ($params)
     {
         $this->model = new EventsModel();
+        $this->model_user = new UsersModel();
         $this->headers = getallheaders();
+        
 
         if (!empty($params))
         {
@@ -47,47 +57,42 @@ class EventsController extends Controller
     public function getEventById ()
     {
         $data = $this->model->getOne($this->dataParam['id']);
-        $data['status_orders'] = $this->status_model->getAll();
+        $user = $this->getUserInfo();
 
-        if (!empty($data))
+        if (!empty($data) && ($data['id_user'] == $user['id'] || $user['id_role'] == ROLE))
         {
-            return $this->getServerAnswer(200, true, 'order successfully received', $data);
+            return $this->getServerAnswer(200, true, 'event successfully received', $data);
         }
         else
         {
-            return $this->getServerAnswer(500, false, 'Internal Server Error');
+            return $this->getServerAnswer(403, false, 'Forbbiden');
         }
-    }
-
-    public function getEventsByCustomer ()
-    {
-    	$data = $this->model->getOrdersByCustomer($this->headers['Authorization']);
-    	if ($data)
-    	{
-    		return $this->getServerAnswer(200, true, 'orders successfully received', $data);
-    	}
-    	else
-    	{
-    		return $this->getServerAnswer(500, false, 'Internal Server Error');
-    	}
     }
 
   	public function postEvents ()
 	{
-
 		if ($this->validate()) 
 		{
-            $customer = $this->model_customer->getCustomerToken($this->headers['Authorization']);
-            $this->data->id_customer = $customer['id'];
+            $checkData = $this->validator($this->data);
             
-			if ($this->model->createEvent($this->data))
-			{
-				return $this->getServerAnswer(200, true, 'order was added successful');
-			}
-			else
-			{
-				return $this->getServerAnswer(500, false, 'Internal Server Error');
-			}
+            if ($checkData['result'])
+            {
+                $data = $this->model->createEvent($this->data);
+      
+                if ($data['result'])
+                {
+                    return $this->getServerAnswer(200, $data['result'], $data['message']);
+                }
+                else
+                {
+                    return $this->getServerAnswer(200, $data['result'], $data['message']);
+                }
+            }
+            else
+            {
+                return $this->getServerAnswer(200, $checkData['result'], $checkData['message']);
+            }
+           
 		}
 
 		return $this->getServerAnswer(400, false, 'Bad Request');  
@@ -99,7 +104,7 @@ class EventsController extends Controller
 		{
 			if ($this->model->updateEvent($this->data, $this->dataParam['id']))
 			{
-				return $this->getServerAnswer(200, true, 'order status change successful');
+				return $this->getServerAnswer(200, true, 'event update successful');
 			}
 			else
 			{
@@ -108,4 +113,59 @@ class EventsController extends Controller
 		}
 		return $this->getServerAnswer(400, false, 'Bad Request');  
 	}
+
+    private function validator ($data) 
+    {
+        
+        $current_time = strtotime("now");
+        
+        if ($data->recurring) 
+        {
+            switch ($data->time_recurring) 
+            {
+                case 'weekly':
+                    if ($data->repeat > 4 || $data->repeat <= 0) {
+                        return ['result' => false, 'message' => 'recurring event weekly in not valid, should be max 4'];
+                    }
+                    break;
+                case 'bi-weekly':
+                    if ($data->repeat > 2 || $data->repeat <= 0) {
+                        return ['result' => false, 'message' => 'recurring event bi-weekly in not valid, should be max 2'];
+                    }
+                    break;
+                case 'monthly':
+                    if ($data->repeat > 1 || $data->repeat <= 0) {
+                        return ['result' => false, 'message' => 'recurring event monthly in not valid, should be max 1'];
+                    }
+                    break;
+                default:
+                    return ['result' => false, 'message' => 'recurring event do not exist'];
+                    break;
+            }
+        }
+
+        if ($data->time_start >= $data->time_end) 
+        {
+            return ['result' => false, 'message' => 'Time is not valid'];
+        }
+
+        if ($data->time_start < $current_time) 
+        {
+            return ['result' => false, 'message' => 'Time params are not valid'];
+        }
+
+        return ['result' => true, 'message' => 'data is valid'];
+    }
+
+    private function getUserInfo ()
+    {
+        $authHeader = isset($this->headers['Authorization']) ? $this->headers['Authorization'] : false;
+        if ($authHeader)
+        {
+            return $this->model_user->checkAuth($authHeader);
+        }
+        return false;
+       
+    }
+
 }

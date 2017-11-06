@@ -24,9 +24,10 @@ class AuthController extends Controller
 
     public function getAuth () 
     {
-        if ($this->checkAuth($this->headers['Authorization']))
+        $data = $this->checkAuth($this->headers['Authorization']);
+        if ($data)
         {
-            return $this->getServerAnswer(200, true, 'authentication true');
+            return $this->getServerAnswer(200, true, 'authentication true', $data);
         }
         else
         {

@@ -50,23 +50,23 @@ class UsersModel extends Model
         return false;
     }
 	
-	public function getToken ($token)
-    {
-        $sql = $this->select([
-                'id'])
-            ->from(DB_PREFIX.$this->table)
-            ->where(['token' => "<:token>"])
-			->limit(1)
-            ->execute();
-        $sql = str_replace(["'<", ">'"], '', $sql);
+	// public function getToken ($token)
+ //    {
+ //        $sql = $this->select([
+ //                'id'])
+ //            ->from(DB_PREFIX.$this->table)
+ //            ->where(['token' => "<:token>"])
+	// 		->limit(1)
+ //            ->execute();
+ //        $sql = str_replace(["'<", ">'"], '', $sql);
         
-        $STH = $this->connect->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
-        if ($STH->execute([':token' => $token]))
-        {
-            return $STH->fetch(PDO::FETCH_ASSOC);
-        }  
-        return false;
-    }
+ //        $STH = $this->connect->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+ //        if ($STH->execute([':token' => $token]))
+ //        {
+ //            return $STH->fetch(PDO::FETCH_ASSOC);
+ //        }  
+ //        return false;
+ //    }
 
 	public function createUser ($data)
     {
@@ -125,9 +125,9 @@ class UsersModel extends Model
 
         if ($STH->execute())
         {
-            return true;
+            return ['result' => true, 'message' => 'user update successful'];
         }  
-        return false;
+        return ['result' => false, 'message' => 'error'];
     }
 
     public function deleteUser ($id)
@@ -135,12 +135,15 @@ class UsersModel extends Model
         $sql = $this->select([
                 'id'])
             ->from(DB_PREFIX.$this->table)
+            ->where(['id_role' => '<?>'])
             ->execute();
         $sql = str_replace(["'<", ">'"], '', $sql);
         
         $STH = $this->connect->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+        $id_role = ROLE;
+        $STH->bindParam(1, $id_role);
         $STH->execute();
-        if ($STH->rowCount() > 1)
+        if ($STH->rowCount() >= 1)
         {
             $sql = $this->delete()
                 ->from(DB_PREFIX.$this->table)
@@ -234,7 +237,8 @@ class UsersModel extends Model
     public function checkAuth ($token)
     {
     	$sql = $this->select([
-    			'id'])
+    			'id',
+                'id_role'])
             ->from(DB_PREFIX.$this->table)
             ->where(['token' => "<:token>"])
             ->where(['token_create_at' => "<:token_create_at>"], "and", ">=")
@@ -249,7 +253,7 @@ class UsersModel extends Model
        
         if ($STH->rowCount() > 0)
         {
-            return true;
+            return $STH->fetch(PDO::FETCH_ASSOC);
         }  
         return false;
     }
