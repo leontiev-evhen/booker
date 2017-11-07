@@ -78,7 +78,7 @@ class EventsController extends Controller
             if ($checkData['result'])
             {
                 $data = $this->model->createEvent($this->data);
-      
+
                 if ($data['result'])
                 {
                     return $this->getServerAnswer(200, $data['result'], $data['message']);
@@ -102,14 +102,25 @@ class EventsController extends Controller
 	{
 		if ($this->validate()) 
 		{
-			if ($this->model->updateEvent($this->data, $this->dataParam['id']))
-			{
-				return $this->getServerAnswer(200, true, 'event update successful');
-			}
-			else
-			{
-				return $this->getServerAnswer(500, false, 'Internal Server Error');
-			}
+            $checkData = $this->validator($this->data);
+            
+            if ($checkData['result'])
+            {
+                $data = $this->model->updateEvent($this->data, $this->dataParam['id']);
+    			
+                if ($data['result'])
+    			{
+    				return $this->getServerAnswer(200, $data['result'], $data['message']);
+    			}
+    			else
+    			{
+    				return $this->getServerAnswer(200, $data['result'], $data['message']);
+    			}
+            }
+            else
+            {
+                return $this->getServerAnswer(200, $checkData['result'], $checkData['message']);
+            }
 		}
 		return $this->getServerAnswer(400, false, 'Bad Request');  
 	}
@@ -118,9 +129,9 @@ class EventsController extends Controller
     {
         if ($this->dataParam['id']) 
         {
-            if ($this->model->deleteEvent ($this->dataParam['id']))
+            if ($this->model->deleteEvent ($this->dataParam['id'], $this->headers['Recurring']))
             {
-                return $this->getServerAnswer(200, true, 'event delete successful');
+                return $this->getServerAnswer(200, true, 'The event has been deleted');
             }
             else
             {
@@ -136,7 +147,7 @@ class EventsController extends Controller
         
         $current_time = strtotime("now");
         
-        if ($data->recurring) 
+        if ($data->recurring && !empty($data->time_recurring)) 
         {
             switch ($data->time_recurring) 
             {

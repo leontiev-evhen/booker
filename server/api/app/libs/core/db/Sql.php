@@ -18,6 +18,7 @@ class Sql
     protected $having;
     protected $orderBy;
     protected $limit;
+    protected $_in;
     
     public function select ($fields)
     {
@@ -31,31 +32,37 @@ class Sql
             return $this;
         }
     }
+
     public function insert ()
     {
         $this->insert = 'INSERT INTO ';
         return $this;
     }
+
     public function update ()
     {
         $this->update = 'UPDATE ';
         return $this;
     }
+
     public function delete ()
     {
         $this->delete = 'DELETE FROM ';
         return $this;
     }
+
     public function from ($table, $alias = ' ')
     {
         $this->from = $table.$alias;
         return $this;
     }
+
     public function where ($condition, $on = '', $symbol = ' = ')
     {
         $this->where .= (($on) ? ' '.strtoupper($on).' ' : ' WHERE ').key($condition).$symbol."'".$condition[key($condition)]."'";
         return $this;
     }
+
     public function set ($fields)
     {
         if ($this->checkArray($fields))
@@ -67,6 +74,7 @@ class Sql
             return $this;
         }
     }
+
     public function values ($set)
     {
         if ($this->checkArray($set))
@@ -80,21 +88,25 @@ class Sql
             return $this;
         }
     }
+
     public function distinct ()
     {
         $this->distinct = 'DISTINCT ';
         return $this;
     }
+
     public function join ($type, $table, $on = '')
     {
         $this->join .= ' '.strtoupper($type).' JOIN '.$table.(!empty($on) ? ' ON '.$on : '');
         return $this;
     }
+
     public function groupBy ($field)
     {
         $this->groupBy = ' GROUP BY '.$field;
         return $this;
     }
+
     public function having ($arg) {
         $this->having = ' HAVING '.$arg;
         return $this;
@@ -104,11 +116,20 @@ class Sql
         $this->orderBy = ' ORDER BY '.$field.' '.strtoupper($sort);
         return $this;
     }
+
     public function limit ($num, $offset = '')
     {
         $this->limit = ' LIMIT '.$num.(!empty($offset) ? ','.$offset : '');
         return $this;
     }
+
+    public function _in ($data)
+    {
+        $ids = implode(',', $data);
+        $this->_in = ' IN ('.$ids.')';
+        return $this;
+    }
+
     protected function checkArray ($array)
     {
         if (is_array($array)) {
@@ -119,10 +140,12 @@ class Sql
             throw new Exception('argument is not array');
         }
     }
+
     protected function quoteSimpleColumnName ($name)
     {
         return strpos($name, "'") !== false ? $name : "'" . $name . "'";
     }
+
     public function execute()
     {
         switch ($this)
@@ -147,7 +170,7 @@ class Sql
 
             case !empty($this->delete):
                 
-                $sql = $this->delete.$this->from.$this->where;
+                $sql = $this->delete.$this->from.$this->where.$this->_in;
                 $this->clear(); 
                 return $sql;
         }   

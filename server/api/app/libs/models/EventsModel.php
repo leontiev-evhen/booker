@@ -172,13 +172,12 @@ class EventsModel extends Model
         }
         else
         {
-            $arrResult = ['result' => false, 'message' => date("Y-m-d H:i", $data->time_start).' - '.date("H:i", $data->time_end).' the time has already been booked'];
+            $arrResult[] = ['result' => false, 'message' => date("Y-m-d H:i", $data->time_start).' - '.date("H:i", $data->time_end).' the time has already been booked'];
         }
 
-     
-        if (count($arrResult) == 2)
+        if (count($arrResult) == 1)
         {
-            return $arrResult;
+            return ['result' => $arrResult[0]['result'], 'message' => $arrResult[0]['message']];
         }
         else
         {   
@@ -296,18 +295,55 @@ class EventsModel extends Model
                 'time_start',
                 'time_end'])
             ->from(DB_PREFIX.$this->table)
-            ->where(['time_start' => '<?>'], null, '>=')
+            ->where(['id_room' => '<?>'])
+            ->where(['time_start' => '<?>'], 'and', '>=')
             ->where(['time_end' => '<?>'], 'and', '<=')
-            ->where(['id_room' => '<?>'], 'and')
+            
             ->orderBy('time_start')
             ->execute();
         $sql = str_replace(["'<", ">'"], '', $sql);
 
         $STH = $this->connect->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
-       
-        $STH->bindParam(1, $time_start);
-        $STH->bindParam(2, $time_end);
-        $STH->bindParam(3, $id_room);
+        
+        $STH->bindParam(1, $id_room);
+        $STH->bindParam(2, $time_start);
+        $STH->bindParam(3, $time_end);
+        
+
+        if ($STH->execute())
+        {
+            return $STH->fetchAll();
+        }  
+        return false;
+    }
+
+    private function getEventsDayUpdate ($data, $id) 
+    {
+        $year = date("Y", $data->time_start);
+        $month = date("m", $data->time_start);
+        $day = date("d", $data->time_start);
+        $id_room = $data->id_room;
+
+        $time_start = strtotime($day.'-'.$month.'-'.$year.'08:00:00');
+        $time_end = strtotime($day.'-'.$month.'-'.$year.'20:00:00');
+
+        $sql = $this->select([
+                'time_start',
+                'time_end'])
+            ->from(DB_PREFIX.$this->table)
+            ->where(['id_room' => '<?>'], 'and')
+            ->where(['time_start' => '<?>'], 'and', '>=')
+            ->where(['time_end' => '<?>'], 'and', '<=')
+            ->where(['id' => '<?>'], 'and', '!=')
+            ->orderBy('time_start')
+            ->execute();
+        $sql = str_replace(["'<", ">'"], '', $sql);
+
+        $STH = $this->connect->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+        $STH->bindParam(1, $id_room);
+        $STH->bindParam(2, $time_start);
+        $STH->bindParam(3, $time_end);
+        $STH->bindParam(4, $id);
 
         if ($STH->execute())
         {
@@ -318,11 +354,11 @@ class EventsModel extends Model
 
     public function updateEvent ($data, $id) 
     {
-        $arrEvents = $this->getEventsDay($data);
+        $arrEvents = $this->getEventsDayUpdate($data, $id);
         if ($this->checkTimeEvents($data, $arrEvents))
         {
-            $result = false;
             $date = new DateTime();
+
             $sql = $this->update()
                 ->from(DB_PREFIX.$this->table)
                 ->set([
@@ -343,11 +379,8 @@ class EventsModel extends Model
             $STH->bindParam(4, $data->time_end);
             $STH->bindParam(5, $id);
 
-            if ($STH->execute())
-            {
-                $result = true;
-            }  
-
+            $STH->execute();
+ 
             if ($data->recurring)
             {
                 if ($data->parent_id == 0)
@@ -382,15 +415,13 @@ class EventsModel extends Model
                     }
                 }
             }
-            return $result;
+
+            return ['result' => true, 'message' => 'The event '.date("Y-m-d H:i", $data->time_start).' - '.date("H:i", $data->time_end).' has been updated'];
         }
         else
         {
-            $arrResult = ['result' => false, 'message' => date("Y-m-d H:i", $data->time_start).' - '.date("H:i", $data->time_end).' the time has already been booked'];
+            return ['result' => false, 'message' => date("Y-m-d H:i", $data->time_start).' - '.date("H:i", $data->time_end).' the time has already been booked'];
         }
-
-
-        
     }
 
     private function getRecurringEvents ($time, $id_room, $parent_id)
@@ -423,10 +454,41 @@ class EventsModel extends Model
         
     }
 
-    public function deleteEvents ($id)
+    public function deleteEvent ($id, $recurring = 0)
     {
-        $result = false;
+        if ($recurring)
+        {
+            $data = $this->getOne($id);
+
+            if ($data['parent_id'] == 0)
+            {
+                $parent_id = $id;
+            }
+            else
+            {
+                $parent_id = $data['parent_id'];
+            }
+
+            $arrData = $this->getRecurringEvents($data['time_end'], $data['id_room'], $parent_id);
+            if ($arrData)
+            {
+                foreach ($arrData  as $key => $value) 
+                {
+                    $this->deleteEvent($value['id']);
+                }
+            }
+        }
         $sql = $this->delete()
+            ->from(DB_PREFIX.$this->table)
+            ->where(['id' => '<?>'])
+            ->execute();
+        $sql = str_replace(["'<", ">'"], '', $sql);
+
+        $STH = $this->connect->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+        
+        $STH->bindParam(1, $id);
+
+        $STH->execute();        $sql = $this->delete()
             ->from(DB_PREFIX.$this->table)
             ->where(['id' => '<?>'])
             ->execute();
@@ -438,14 +500,10 @@ class EventsModel extends Model
 
         if ($STH->execute())
         {
-            $result = true;
-        }  
-
-        if ($data->recurring)
-        {
-            $result = true;
+            return true;
         }
-        return $result;
+        return false;
+
     }
 
 }

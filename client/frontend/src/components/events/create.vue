@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<h3 class="my-4"><i class="fa fa-list-alt" aria-hidden="true"></i> Create Event</h3>
+		<h3 class="my-4"><i class="fa fa-list-alt" aria-hidden="true"></i> Create Event (Room {{$route.params.id}})</h3>
 		<div class="create col-md-6">
 			<form @submit.prevent="create">
 				<p v-if="error" class="is-danger">{{error}}</p>

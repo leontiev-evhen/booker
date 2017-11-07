@@ -47,7 +47,7 @@
 				<p>Created: {{event.create_at}}</p>
 			</div>
 			<button type="submit" class="btn btn-primary">Update</button>
-			<button class="btn btn-danger">Delete</button>
+			<button type="button" class="btn btn-danger" @click="remove(event.id)">Delete</button>
 		</form>
 	</div>
 </template>
@@ -156,7 +156,11 @@ export default {
 
 						if (response.status == 200) {
 							if (!response.data.success) {
-								console.log(response.data.message)
+								this.$swal(
+									'Warning!',
+    								response.data.message,
+    								'warning'
+    							);
 							} else {
 								this.$swal(
 									'Success!',
@@ -173,8 +177,49 @@ export default {
 			}
 		
  		},
- 		remove: function () {
+ 		remove: function (id) {
+ 			let self = this;
+ 			this.$swal({
+			  title: 'Are you sure?',
+			  text: "You won't be able to revert this!",
+			  type: 'warning',
+			  showCancelButton: true,
+			  confirmButtonColor: '#3085d6',
+			  cancelButtonColor: '#d33',
+			  confirmButtonText: 'Yes, delete it!'
+			}).then(function () {
 
+				let instance = self.axios.create({
+					baseURL: self.$parent.AJAX_URL
+				});
+
+				instance.defaults.headers.common['Recurring'] = (self.recurring) ? 1:0;
+			  	self.axios.delete(self.$parent.$parent.AJAX_URL + '/booker/client/api/events/id/' + id).then((response) => {
+
+			        if (response.status == 200) {
+			            if (response.data.success) {
+			            	self.$swal(    
+			            		'Deleted!',
+							    response.data.message,
+							    'success'
+							).then(function () {
+    							window.close();
+    						});
+			            } else {
+			              	self.error = response.data.message
+			              	self.$swal(    
+			            		'Error!',
+							    response.data.message,
+							    'error'
+							);
+			            }
+			        } else {
+			            console.log(response.data.message)
+			        }
+		    	})
+			}, function (dismiss) {
+			
+			});
  		}
   	},
     created() {
