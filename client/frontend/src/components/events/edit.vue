@@ -37,7 +37,10 @@
 				</select> 
 				<div v-else>
 					<input v-model="id_user" type="hidden" class="form-control" :value="this.$parent.$parent.user.id">
-					<p>{{this.$parent.$parent.user.name}}</p>
+					<p class="user_name">
+						<i class="fa fa-user" aria-hidden="true"></i>
+						{{this.$parent.$parent.user.name}}
+					</p>
 				</div>
 			</div>
 			<div class="form-group" v-if="event.child">
@@ -273,7 +276,7 @@ export default {
 
 
 <style>
-/*	.auth_block {
+	.auth_block {
 		display: none;
 	}
 
@@ -288,5 +291,5 @@ export default {
 	#app {
 	    margin-top: 10px;
     	padding-bottom: 10px;
-	}*/
+	}
 </style>

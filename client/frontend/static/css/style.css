@@ -1026,3 +1026,8 @@ body::-webkit-scrollbar-thumb {
   background-color: red;
   outline: 1px solid red;
 }
+
+.user_name {
+	font-size: 18px;
+    font-style: italic;
+}
