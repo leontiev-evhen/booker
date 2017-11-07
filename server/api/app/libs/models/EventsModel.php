@@ -2,6 +2,7 @@
 namespace libs\models;
 use libs\core\Model;
 use \PDO;
+use \DateTime;
 
 class EventsModel extends Model
 {
@@ -110,7 +111,7 @@ class EventsModel extends Model
 
     public function deleteUserEvent ($id)
     {
-         $sql = $this->delete()
+        $sql = $this->delete()
             ->from(DB_PREFIX.$this->table)
             ->where(['id_user' => '<?>'])
             ->where(['time_start' => '<?>'], 'and', '>=')
@@ -130,23 +131,11 @@ class EventsModel extends Model
         return false;
     }
 
-
-
     public function createEvent ($data)
     {
-        //print_r($data);
-      
-     //echo $data->time_start;
-        //echo date("Y-m-d H:i:s", 1509865200);
-        //echo strtotime($day.'-'.$month.'-'.$year.'08:00:00');//1509861600
-        //echo strtotime($day.'-'.$month.'-'.$year.'20:00:00');//1509904800
-
-        //echo strtotime('+1 day', $data->time_start);
-
         $arrEvents = $this->getEventsDay($data);
         $result = $this->checkTimeEvents($data, $arrEvents);
-      
-//$dbh->lastInsertId()
+
         if ($result)
         {
             $arrResult = [];
@@ -329,31 +318,134 @@ class EventsModel extends Model
 
     public function updateEvent ($data, $id) 
     {
-        $sql = $this->update()
+        $arrEvents = $this->getEventsDay($data);
+        if ($this->checkTimeEvents($data, $arrEvents))
+        {
+            $result = false;
+            $date = new DateTime();
+            $sql = $this->update()
+                ->from(DB_PREFIX.$this->table)
+                ->set([
+                    'id_user' => '<?>',
+                    'description' => '<?>',
+                    'time_start' => '<?>',
+                    'time_end' => '<?>'])
+                ->where(['id' => '<?>'])
+                ->limit(1)
+                ->execute();
+            $sql = str_replace(["'<", ">'"], '', $sql);
+            
+            $STH = $this->connect->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+            
+            $STH->bindParam(1, $data->id_user);
+            $STH->bindParam(2, $data->description);
+            $STH->bindParam(3, $data->time_start);
+            $STH->bindParam(4, $data->time_end);
+            $STH->bindParam(5, $id);
+
+            if ($STH->execute())
+            {
+                $result = true;
+            }  
+
+            if ($data->recurring)
+            {
+                if ($data->parent_id == 0)
+                {
+                    $parent_id = $id;
+                }
+                else
+                {
+                    $parent_id = $data->parent_id;
+                }
+
+                $arrData = $this->getRecurringEvents($data->time_end, $data->id_room, $parent_id);
+                if ($arrData)
+                {
+                    $newHourStart = (int)date('H', $data->time_start);
+                    $newMinStart = (int)date('i', $data->time_start);
+
+                    $newHourEnd = (int)date('H', $data->time_end);
+                    $newMinEnd = (int)date('i', $data->time_end);
+                    $data->recurring = 0;
+                    foreach ($arrData  as $key => $value) 
+                    {
+                        $date->setTimestamp($value['time_start']);
+                        $date->setTime($newHourStart, $newMinStart);
+                        $data->time_start = $date->getTimestamp();
+
+                        $date->setTimestamp($value['time_end']);
+                        $date->setTime($newHourEnd, $newMinEnd);
+                        $data->time_end = $date->getTimestamp();
+
+                        $this->updateEvent($data, $value['id']);
+                    }
+                }
+            }
+            return $result;
+        }
+        else
+        {
+            $arrResult = ['result' => false, 'message' => date("Y-m-d H:i", $data->time_start).' - '.date("H:i", $data->time_end).' the time has already been booked'];
+        }
+
+
+        
+    }
+
+    private function getRecurringEvents ($time, $id_room, $parent_id)
+    {
+        $sql = $this->select([
+                'id',
+                'id_user',
+                'description',
+                'time_start',
+                'time_end'])
             ->from(DB_PREFIX.$this->table)
-            ->set([
-                'id_user' => '<?>',
-                'description' => '<?>',
-                'time_start' => '<?>',
-                'time_end' => '<?>'])
-            ->where(['id' => '<?>'])
-            ->limit(1)
+            ->where(['time_start' => '<?>'], null, '>=')
+            ->where(['id_room' => '<?>'], 'and')
+            ->where(['parent_id' => '<?>'], 'and')
+            ->orderBy('time_start')
             ->execute();
         $sql = str_replace(["'<", ">'"], '', $sql);
-        
+
         $STH = $this->connect->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
-        
-        $STH->bindParam(1, $data->id_user);
-        $STH->bindParam(2, $data->description);
-        $STH->bindParam(3, $data->time_start);
-        $STH->bindParam(4, $data->time_end);
-        $STH->bindParam(5, $id);
+       
+        $STH->bindParam(1, $time);
+        $STH->bindParam(2, $id_room);
+        $STH->bindParam(3, $parent_id);
 
         if ($STH->execute())
         {
-            return true;
+            return $STH->fetchAll();
+        } 
+        return false; 
+        
+    }
+
+    public function deleteEvents ($id)
+    {
+        $result = false;
+        $sql = $this->delete()
+            ->from(DB_PREFIX.$this->table)
+            ->where(['id' => '<?>'])
+            ->execute();
+        $sql = str_replace(["'<", ">'"], '', $sql);
+
+        $STH = $this->connect->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+        
+        $STH->bindParam(1, $id);
+
+        if ($STH->execute())
+        {
+            $result = true;
         }  
-        return false;
+
+        if ($data->recurring)
+        {
+            $result = true;
+        }
+        return $result;
     }
 
 }

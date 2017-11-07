@@ -105,7 +105,7 @@ class UsersModel extends Model
 
     public function updateUser ($data, $id)
     {
-		if (!$this->checkUniqueEmail($data->email))
+		if (!$this->checkUniqueEmailUpdate($data->email, $id))
     	{
 			$sql = $this->update()
 				->from(DB_PREFIX.$this->table)
@@ -206,6 +206,29 @@ class UsersModel extends Model
         
         $STH = $this->connect->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
         $STH->execute([':email' => $email]);
+       
+        if ($STH->rowCount() > 0)
+        {
+            return true;
+        }  
+        return false;
+    }
+
+    private function checkUniqueEmailUpdate ($email, $id)
+    {
+        $sql = $this->select([
+                'email'])
+            ->from(DB_PREFIX.$this->table)
+            ->where(['email' => "<?>"])
+            ->where(['id' => "<?>"], 'and', '!=')
+            ->execute();
+        $sql = str_replace(["'<", ">'"], '', $sql);
+        
+        $STH = $this->connect->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+
+        $STH->bindParam(1, $email);
+        $STH->bindParam(2, $id);
+        $STH->execute();
        
         if ($STH->rowCount() > 0)
         {

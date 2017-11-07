@@ -41,7 +41,7 @@ export default {
   },
   methods: {
 		openModal: function (id) {
-			window.open('/#/event/edit/' + id, '_blank', 'location=yes,height=570,width=520,scrollbars=yes,status=yes');
+			window.open('/#/event/edit/' + id, '_blank', 'location=yes,height=550,width=550,scrollbars=no,status=yes');
 		}
   },
   created() {

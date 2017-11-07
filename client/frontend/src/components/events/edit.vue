@@ -47,8 +47,8 @@
 				<p>Created: {{event.create_at}}</p>
 			</div>
 			<button type="submit" class="btn btn-primary">Update</button>
+			<button class="btn btn-danger">Delete</button>
 		</form>
-		<button type="submit" class="btn btn-danger">Delete</button>
 	</div>
 </template>
 
@@ -147,9 +147,10 @@ export default {
 						time_start: +this.time_data_start,
 						time_end: +this.time_data_end,
 						id_user: +this.id_user,
-						id_room: +this.id_room,
+						id_room: +this.event.id_room,
 						description: (this.description) ? this.description : this.event.description,
-						recurring: (this.recurring) ? 1:0
+						recurring: (this.recurring) ? 1:0,
+						parent_id: +this.event.parent_id
 					}, config)  
 					.then((response) => {
 
@@ -171,6 +172,9 @@ export default {
 					})
 			}
 		
+ 		},
+ 		remove: function () {
+
  		}
   	},
     created() {
@@ -180,7 +184,6 @@ export default {
     	let self = this;
 		this.axios.get(this.$parent.$parent.AJAX_URL + '/booker/client/api/events/id/' + this.$route.params.id)  
 	    	.then(function (response) {
-	    		console.log(response.status)
 			  	if (response.status == 200) {
 		            if (response.data.success) {
 		            	self.event = response.data.data
@@ -194,8 +197,6 @@ export default {
 		                self.year = new Date(self.event.time_end * 1000).getFullYear();
 		                self.month = new Date(self.event.time_end * 1000).getMonth();
 		                self.day = new Date(self.event.time_end * 1000).getDate();
-
-		                self.id_room = self.event.id_room;
 
 		            } else {
 		            	console.log(response.data.message)
@@ -227,5 +228,20 @@ export default {
 
 
 <style>
+/*	.auth_block {
+		display: none;
+	}
 
+	body::after {
+    	height: 0;
+	}
+
+	.my-4 {
+		padding: 0;
+	}
+
+	#app {
+	    margin-top: 10px;
+    	padding-bottom: 10px;
+	}*/
 </style>

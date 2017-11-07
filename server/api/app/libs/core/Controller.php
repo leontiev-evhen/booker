@@ -46,7 +46,10 @@ class Controller
                 {
                     return false;
                 } 
+
+                $this->data->$key = trim(strip_tags($item));
             }
+         
             return true;
         }
         throw new Exception('Invalid data');

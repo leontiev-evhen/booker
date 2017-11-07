@@ -114,6 +114,23 @@ class EventsController extends Controller
 		return $this->getServerAnswer(400, false, 'Bad Request');  
 	}
 
+    public function deleteEvents ()
+    {
+        if ($this->dataParam['id']) 
+        {
+            if ($this->model->deleteEvent ($this->dataParam['id']))
+            {
+                return $this->getServerAnswer(200, true, 'event delete successful');
+            }
+            else
+            {
+                return $this->getServerAnswer(200, false, 'error');
+            }
+        }
+
+        return $this->getServerAnswer(400, false, 'Bad Request');
+    }
+
     private function validator ($data) 
     {
         
