@@ -34,7 +34,7 @@
 								</tr>
 							</tbody>
 						</table>
-						<month :months="calendar_days" :format="format"></month>
+						<month :months="calendar_days" :format="format" @editEvent="editEvent"></month>
 		   		</div>
 		      </div>
 
@@ -106,6 +106,9 @@ export default {
 		})
   	},
 	methods: {
+		editEvent: function () {
+			this.getEvents();
+		},
     	getMonthArr: function (year, month, format = 'ua' ) {
 		
 			  this.calendar_days = [];
@@ -179,16 +182,16 @@ export default {
 			}
 			
 			this.getEvents();
-			this.calendar_days = this.getMonthArr(this.year, this.month_num)
+			this.calendar_days = this.getMonthArr(this.year, this.month_num);
 	    },
 
 	   changeFormat: function () {
 	      if (this.format == 'ua') {
-	        this.format = 'usa'
-	        this.calendar_days = this.getMonthArr(this.year, this.month_num,'usa')
+	        this.format = 'usa';
+	        this.calendar_days = this.getMonthArr(this.year, this.month_num,'usa');
 	      } else {
-	        this.format = 'ua'
-	        this.calendar_days = this.getMonthArr(this.year, this.month_num,'ua')
+	        this.format = 'ua';
+	        this.calendar_days = this.getMonthArr(this.year, this.month_num,'ua');
 	      }
 	    },
 

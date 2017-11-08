@@ -13,7 +13,7 @@
                   <tr v-for="week in months">
                 
                      <td  v-for="day in week" class="fc-mon fc-widget-content fc-past" :class="{ 'fc-day': day.num}">
-						            <day :day="day"></day> 
+						            <day :day="day" @editEvent="editEvent"></day> 
                      </td>
                   </tr>
                </tbody>
@@ -37,7 +37,12 @@ export default {
 	props:['months', 'format'],
 	components: {
 		Day
-	}
+	},
+  methods: {
+    editEvent: function () {
+      this.$emit('editEvent');
+    }
+  }
 }  
 </script>
 
