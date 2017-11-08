@@ -1,0 +1,119 @@
+<?xml version="1.0"?>
+<mysqldump xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<database name="booker">
+	<table_structure name="bk_events">
+		<field Field="id" Type="int(11)" Null="NO" Key="PRI" Extra="auto_increment" Comment="" />
+		<field Field="id_user" Type="int(11)" Null="NO" Key="" Extra="" Comment="" />
+		<field Field="id_room" Type="int(11)" Null="NO" Key="" Extra="" Comment="" />
+		<field Field="description" Type="text" Null="NO" Key="" Extra="" Comment="" />
+		<field Field="time_start" Type="int(11)" Null="NO" Key="" Extra="" Comment="" />
+		<field Field="time_end" Type="int(11)" Null="NO" Key="" Extra="" Comment="" />
+		<field Field="parent_id" Type="int(11)" Null="NO" Key="" Default="0" Extra="" Comment="" />
+		<field Field="create_at" Type="datetime" Null="NO" Key="" Extra="" Comment="" />
+		<key Table="bk_events" Non_unique="0" Key_name="PRIMARY" Seq_in_index="1" Column_name="id" Collation="A" Cardinality="10" Null="" Index_type="BTREE" Comment="" Index_comment="" />
+		<options Name="bk_events" Engine="InnoDB" Version="10" Row_format="Compact" Rows="10" Avg_row_length="1638" Data_length="16384" Max_data_length="0" Index_length="0" Data_free="0" Auto_increment="254" Create_time="2017-11-02 12:26:17" Collation="utf8_general_ci" Create_options="" Comment="" />
+	</table_structure>
+	<table_data name="bk_events">
+	<row>
+		<field name="id">244</field>
+		<field name="id_user">8</field>
+		<field name="id_room">1</field>
+		<field name="description">Morning meeting</field>
+		<field name="time_start">1510124400</field>
+		<field name="time_end">1510128000</field>
+		<field name="parent_id">0</field>
+		<field name="create_at">2017-11-08 08:39:03</field>
+	</row>
+	<row>
+		<field name="id">245</field>
+		<field name="id_user">8</field>
+		<field name="id_room">1</field>
+		<field name="description">Morning meeting</field>
+		<field name="time_start">1510729200</field>
+		<field name="time_end">1510732800</field>
+		<field name="parent_id">244</field>
+		<field name="create_at">2017-11-08 08:39:03</field>
+	</row>
+	<row>
+		<field name="id">246</field>
+		<field name="id_user">8</field>
+		<field name="id_room">1</field>
+		<field name="description">Morning meeting</field>
+		<field name="time_start">1511334000</field>
+		<field name="time_end">1511337600</field>
+		<field name="parent_id">244</field>
+		<field name="create_at">2017-11-08 08:39:03</field>
+	</row>
+	<row>
+		<field name="id">247</field>
+		<field name="id_user">8</field>
+		<field name="id_room">1</field>
+		<field name="description">Morning meeting</field>
+		<field name="time_start">1511938800</field>
+		<field name="time_end">1511942400</field>
+		<field name="parent_id">244</field>
+		<field name="create_at">2017-11-08 08:39:03</field>
+	</row>
+	<row>
+		<field name="id">248</field>
+		<field name="id_user">8</field>
+		<field name="id_room">1</field>
+		<field name="description">Morning meeting</field>
+		<field name="time_start">1512543600</field>
+		<field name="time_end">1512547200</field>
+		<field name="parent_id">244</field>
+		<field name="create_at">2017-11-08 08:39:03</field>
+	</row>
+	<row>
+		<field name="id">249</field>
+		<field name="id_user">8</field>
+		<field name="id_room">2</field>
+		<field name="description">Morning meeting</field>
+		<field name="time_start">1510124400</field>
+		<field name="time_end">1510126200</field>
+		<field name="parent_id">0</field>
+		<field name="create_at">2017-11-08 08:39:29</field>
+	</row>
+	<row>
+		<field name="id">250</field>
+		<field name="id_user">8</field>
+		<field name="id_room">2</field>
+		<field name="description">Morning meeting</field>
+		<field name="time_start">1511334000</field>
+		<field name="time_end">1511335800</field>
+		<field name="parent_id">249</field>
+		<field name="create_at">2017-11-08 08:39:29</field>
+	</row>
+	<row>
+		<field name="id">251</field>
+		<field name="id_user">8</field>
+		<field name="id_room">2</field>
+		<field name="description">Morning meeting</field>
+		<field name="time_start">1512543600</field>
+		<field name="time_end">1512545400</field>
+		<field name="parent_id">249</field>
+		<field name="create_at">2017-11-08 08:39:29</field>
+	</row>
+	<row>
+		<field name="id">252</field>
+		<field name="id_user">7</field>
+		<field name="id_room">1</field>
+		<field name="description">Meeting</field>
+		<field name="time_start">1510128000</field>
+		<field name="time_end">1510131600</field>
+		<field name="parent_id">0</field>
+		<field name="create_at">2017-11-08 08:40:05</field>
+	</row>
+	<row>
+		<field name="id">253</field>
+		<field name="id_user">7</field>
+		<field name="id_room">1</field>
+		<field name="description">Meeting</field>
+		<field name="time_start">1512720000</field>
+		<field name="time_end">1512723600</field>
+		<field name="parent_id">252</field>
+		<field name="create_at">2017-11-08 08:40:05</field>
+	</row>
+	</table_data>
+</database>
+</mysqldump>

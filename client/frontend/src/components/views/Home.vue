@@ -87,6 +87,12 @@ export default {
     	}
   	},
   	created:function() {
+  		let a = 3;
+  		if (true) {
+  			let a = 5;
+  			console.log(a);
+  		}
+  		console.log(a);
 
   		this.year = this.DATE.getFullYear();
   		this.month_num = this.DATE.getMonth();

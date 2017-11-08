@@ -1,11 +1,11 @@
 <?php
 namespace libs\tests;
-use libs\models\PaymentSystemModel;
+use libs\models\RoomsModel;
 use PDO;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\DbUnit\TestCaseTrait;
 
-class PaymentSystemModelTest extends TestCase
+class RoomsModelTest extends TestCase
 {
     use TestCaseTrait;
 
@@ -23,21 +23,21 @@ class PaymentSystemModelTest extends TestCase
 
     public function getDataSet()
     {
-        return $this->createMySQLXMLDataSet(dirname(__FILE__). '/dump/dump_payment_system.xml');
+        return $this->createMySQLXMLDataSet(dirname(__FILE__). '/dump/dump_users.xml');
     }
 
     public static function setUpBeforeClass()
     {
-        self::$model = new PaymentSystemModel();
+        self::$model = new RoomsModel();
     }
-
-    /*
-    *    getAll()
-    *    return array
+    
+    /**
+    *   getAllRooms()
+    *   retun array
     */
-
-    public function testGetAll ()
-    {
-        $this->assertNotEmpty(self::$model->getAll());
+    public function testGetAllRooms ()
+    {   
+        $this->assertNotEmpty(self::$model->getAllRooms());
     }
+
 }
