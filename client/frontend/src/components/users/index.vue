@@ -6,7 +6,7 @@
 	  		 Users
 	  	</h3>
 	  	<div>
-	  		<a href="/#/user/create" class="btn btn-primary">Add</a>
+	  		<a :href="$parent.$parent.BASE_URL + '/#/user/create'" class="btn btn-primary">Add</a>
 	  	</div>
   		<div class="list-group">
 			<p class="is-danger">{{error}}</p>
@@ -28,7 +28,7 @@
 					  		<i v-if="user.id_role == 1" class="fa fa-user" aria-hidden="true"></i>
 					  	</td>
 					  	<td>
-						  	<a :href="'/#/user/edit/' + user.id" class="btn btn-warning">
+						  	<a :href="$parent.$parent.BASE_URL + '/#/user/edit/' + user.id" class="btn btn-warning">
 						  		<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
 						  	</a>
 						  	<button v-if="user.id_role != 1" type="button" class="btn btn-danger" @click="remove(user.id)">
