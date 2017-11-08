@@ -11,7 +11,7 @@ class RestServer
     {
         $HTTPMethod = $_SERVER['REQUEST_METHOD'];
         $url = $_SERVER['REQUEST_URI'];
-        list($s, $a, $d, $db, $class, $params) = array_pad(explode('/', $url, 6), 6, null);
+        list($t, $s, $a, $d, $db, $class, $params) = array_pad(explode('/', $url, 7), 7, null);
 
 
         $className = 'libs\\controllers\\'.ucfirst($class).'Controller';

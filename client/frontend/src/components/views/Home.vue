@@ -47,7 +47,7 @@
 						Book it 
 						<i class="fa fa-plus-circle" aria-hidden="true"></i>
 					</a>
-					<a v-if="$store.is_admin" href="$parent.$parent.BASE_URL + #/users" class="btn btn-brown">
+					<a v-if="$store.is_admin" :href="$parent.$parent.BASE_URL + '#/users'" class="btn btn-brown">
 						Employee list
 						<i class="fa fa-list" aria-hidden="true"></i>
 					</a>
