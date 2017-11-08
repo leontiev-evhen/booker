@@ -21,7 +21,7 @@
 											Time format {{$store.time_format}}
 										</span>
 										<span @click="changeFormat" class="fc-button fc-button-prev fc-state-default format">
-											Format <img :src="'/static/images/' + format + '.png'" class="format_img">
+											Format <img :src="'static/images/' + format + '.png'" class="format_img">
 										</span>
 										<span @click="changeMonth(-1)" class="fc-button fc-button-prev fc-state-default fc-corner-left">
 											‹
@@ -43,11 +43,11 @@
 
 	      <div class="col-md-3">
 	      	<center class="mt-15">
-					<a v-if="room_id" :href="'/#/event/create/room/' + room_id" class="btn btn-brown">
+					<a v-if="room_id" :href="'#/event/create/room/' + room_id" class="btn btn-brown">
 						Book it 
 						<i class="fa fa-plus-circle" aria-hidden="true"></i>
 					</a>
-					<a v-if="$store.is_admin" href="/#/users" class="btn btn-brown">
+					<a v-if="$store.is_admin" href="#/users" class="btn btn-brown">
 						Employee list
 						<i class="fa fa-list" aria-hidden="true"></i>
 					</a>
