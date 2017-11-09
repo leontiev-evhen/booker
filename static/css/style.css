@@ -1014,6 +1014,10 @@ table.fc-header{
 	font-size: 14px;
 }
 
+.events_list li {
+  list-style-type: none;
+}
+
 body::-webkit-scrollbar {
     width: 0.2em;
 }

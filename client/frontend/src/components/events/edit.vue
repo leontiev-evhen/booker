@@ -276,7 +276,7 @@ export default {
 
 
 <style>
-	.auth_block {
+	/* .auth_block {
 		display: none;
 	}
 
@@ -291,5 +291,5 @@ export default {
 	#app {
 	    margin-top: 10px;
     	padding-bottom: 10px;
-	}
+	} */
 </style>
