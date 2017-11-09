@@ -10,8 +10,16 @@ class EventsModel extends Model
     private $time_start;
     private $time_end;
 
+    /**
+     * get all events
+     * @param integer $id_room
+     * @param integer $month
+     * @param integer $year
+     * @return array|boolean
+     * */
     public function getAll ($id_room, $month, $year) 
     {
+        $month += 1; 
 		if (!function_exists('cal_days_in_month')) 
 		{ 
 			function cal_days_in_month($calendar, $month, $year) 
@@ -21,8 +29,8 @@ class EventsModel extends Model
 		} 
 		
         $days = cal_days_in_month(CAL_GREGORIAN, $month, $year);
-        $time_start = strtotime($year.'/'.($month + 1).'/01');
-        $time_end = strtotime($year.'/'.($month + 1).'/'.$days);
+        $time_start = strtotime($year.'/'.$month.'/01');
+        $time_end = strtotime($year.'/'.$month.'/'.$days);
 
         $sql = $this->select([
                 'id',
@@ -54,6 +62,11 @@ class EventsModel extends Model
         return false;
     }
 
+    /**
+     * get one event
+     * @param integer $id
+     * @return array|boolean
+     * */
     public function getOne ($id)
     {
         $sql = $this->select([
@@ -78,37 +91,46 @@ class EventsModel extends Model
         if ($STH->execute())
         {
             $data = $STH->fetch(PDO::FETCH_ASSOC);
-          
-            $sql = $this->select([
+            if (!empty($data))
+            {
+                 $sql = $this->select([
                     'id'])
                 ->from(DB_PREFIX.$this->table)
                 ->where(['parent_id' => '<?>'])
                 ->execute();
-            $sql = str_replace(["'<", ">'"], '', $sql);
+                $sql = str_replace(["'<", ">'"], '', $sql);
 
-            $STH = $this->connect->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+                $STH = $this->connect->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
 
-            if ($data['parent_id'] == 0) 
-            {
-                $STH->bindParam(1, $id);
+                if ($data['parent_id'] == 0) 
+                {
+                    $STH->bindParam(1, $id);
+                }
+                else
+                {
+                    $STH->bindParam(1, $data['parent_id']);
+                }
+                
+                $STH->execute();
+                if ($STH->rowCount() > 0)
+                {
+                    $data['child'] = $STH->rowCount();
+                }
+                
+                return $data;
             }
-            else
-            {
-                $STH->bindParam(1, $data['parent_id']);
-            }
-            
-            $STH->execute();
-            if ($STH->rowCount() > 0)
-            {
-                $data['child'] = $STH->rowCount();
-            }
-            
-            
-            return $data;
+            return false;
+          
+           
         }  
         return false;
     }
 
+    /**
+     * delete user events
+     * @param integer $id
+     * @return boolean
+     * */
     public function deleteUserEvent ($id)
     {
         $sql = $this->delete()
@@ -131,6 +153,11 @@ class EventsModel extends Model
         return false;
     }
 
+    /**
+     * create event
+     * @param object $data
+     * @return array
+     * */
     public function createEvent ($data)
     {
         $arrEvents = $this->getEventsDay($data);
@@ -189,6 +216,13 @@ class EventsModel extends Model
         }
     }
 
+    /**
+     * insert reccurring events
+     * @param object $data
+     * @param string $time
+     * @param integer $num
+     * @return array
+     * */
     private function insertRecurringEvent ($data, $time = 'week', $num = 1)
     {
         $period = "+ ".$num." ".$time;
@@ -206,6 +240,11 @@ class EventsModel extends Model
         }
     }
 
+    /**
+     * insert event
+     * @param object $data
+     * @return array
+     * */
     private function inserEvent ($data)
     {
         $sql = $this->insert()
@@ -237,6 +276,12 @@ class EventsModel extends Model
             return ['result' => false, 'message' => 'Operation is failed'];
     }
 
+    /**
+     * check time events
+     * @param object $data
+     * @param array $arrEvents
+     * @return boolean
+     * */
     private function checkTimeEvents ($data, $arrEvents)
     {
         $result = false;
@@ -281,6 +326,12 @@ class EventsModel extends Model
         return $result;
     }
 
+    /**
+     * get events of day when create event
+     * @param object $data
+     * @param integer $id
+     * @return array|boolean
+     * */
     private function getEventsDay ($data) 
     {
         $year = date("Y", $data->time_start);
@@ -317,6 +368,12 @@ class EventsModel extends Model
         return false;
     }
 
+    /**
+     * get events of day when update event
+     * @param object $data
+     * @param integer $id
+     * @return array|boolean
+     * */
     private function getEventsDayUpdate ($data, $id) 
     {
         $year = date("Y", $data->time_start);
@@ -331,7 +388,7 @@ class EventsModel extends Model
                 'time_start',
                 'time_end'])
             ->from(DB_PREFIX.$this->table)
-            ->where(['id_room' => '<?>'], 'and')
+            ->where(['id_room' => '<?>'])
             ->where(['time_start' => '<?>'], 'and', '>=')
             ->where(['time_end' => '<?>'], 'and', '<=')
             ->where(['id' => '<?>'], 'and', '!=')
@@ -352,6 +409,12 @@ class EventsModel extends Model
         return false;
     }
 
+    /**
+     * update event
+     * @param object $data
+     * @param integer $id
+     * @return array
+     * */
     public function updateEvent ($data, $id) 
     {
         $arrEvents = $this->getEventsDayUpdate($data, $id);
@@ -424,6 +487,13 @@ class EventsModel extends Model
         }
     }
 
+    /**
+     * get reccuring events from parent id
+     * @param integer $time
+     * @param integer $id_room
+     * @param integer $parent_id
+     * @return array|boolean
+     * */
     private function getRecurringEvents ($time, $id_room, $parent_id)
     {
         $sql = $this->select([
@@ -454,6 +524,12 @@ class EventsModel extends Model
         
     }
 
+    /**
+     * remove event
+     * @param integer $id
+     * @param integer $recurring
+     * @return boolean
+     * */
     public function deleteEvent ($id, $recurring = 0)
     {
         if ($recurring)

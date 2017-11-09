@@ -62,7 +62,7 @@ class UsersModelTest extends TestCase
     /**
     *   @dataProvider additionOneUserProviderFalse
     *   getOneUser()
-    *   retun false
+    *   retun boolean
     */
     public function testGetOneUserrFalse ($data)
     {
@@ -80,7 +80,7 @@ class UsersModelTest extends TestCase
     /**
     *   @dataProvider additionCreateUserProvider
     *   createUser()
-    *   retun true
+    *   retun boolean
     */
     public function testCreateUser ($data)
     {
@@ -98,7 +98,7 @@ class UsersModelTest extends TestCase
     /**
     *   @dataProvider additionCreateUserProviderFalse
     *   createUser()
-    *   retun false
+    *   retun boolean
     */
     public function testCreateUserFalse ($data)
     {
@@ -116,7 +116,7 @@ class UsersModelTest extends TestCase
     /**
     *   @dataProvider additionUpdateUserProvider
     *   updateUser()
-    *   retun true
+    *   retun boolean
     */
     public function testUpdateUser ($data)
     {
@@ -135,7 +135,7 @@ class UsersModelTest extends TestCase
      /**
     *   @dataProvider additionUpdateUserProviderFalse
     *   updateUser()
-    *   retun false
+    *   retun boolean
     */
     public function testUpdateUserFalse ($data)
     {
@@ -154,7 +154,7 @@ class UsersModelTest extends TestCase
     /**
     *   @dataProvider additionDeleteUserProvider
     *   deleteUser()
-    *   retun true
+    *   retun boolean
     */
     public function testDeleteUser ($id)
     {
@@ -189,7 +189,7 @@ class UsersModelTest extends TestCase
     /**
     *   @dataProvider additionCheckUserProviderFalse
     *   checkUser()
-    *   retun false
+    *   retun boolean
     */
     public function testCheckUserFalse ($data)
     {
@@ -206,7 +206,7 @@ class UsersModelTest extends TestCase
     /**
     *   @dataProvider additionUpdateTokenProvider
     *   updateToken()
-    *   retun true
+    *   retun boolean
     */
     public function testUpdateToken ($data)
     {
@@ -223,7 +223,7 @@ class UsersModelTest extends TestCase
     /**
     *   @dataProvider additionCheckAuthProviderFalse
     *   checkAuth()
-    *   retun false
+    *   retun boolean
     */
     public function testCheckAuthFalse ($data)
     {

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: localhost:3306
--- Время создания: Ноя 02 2017 г., 15:27
+-- Время создания: Ноя 09 2017 г., 08:02
 -- Версия сервера: 10.1.25-MariaDB-
 -- Версия PHP: 7.0.22-0ubuntu0.17.04.1
 
@@ -42,10 +42,16 @@ CREATE TABLE `bk_events` (
 --
 
 INSERT INTO `bk_events` (`id`, `id_user`, `id_room`, `description`, `time_start`, `time_end`, `parent_id`, `create_at`) VALUES
-(1, 1, 1, 'test', 1509613200, 1509615000, 0, '2017-11-02 00:00:00'),
-(2, 1, 1, 'test', 1509616800, 1509620400, 0, '2017-11-02 00:00:00'),
-(3, 1, 1, 'test2', 1509879600, 1509883200, 0, '2017-11-02 00:00:00'),
-(4, 1, 1, 'test3', 1510056000, 1510057800, 0, '2017-11-02 00:00:00');
+(244, 8, 1, 'Morning meeting', 1510124400, 1510128000, 0, '2017-11-08 08:39:03'),
+(245, 8, 1, 'Morning meeting', 1510729200, 1510732800, 244, '2017-11-08 08:39:03'),
+(246, 8, 1, 'Morning meeting', 1511334000, 1511337600, 244, '2017-11-08 08:39:03'),
+(247, 8, 1, 'Morning meeting', 1511938800, 1511942400, 244, '2017-11-08 08:39:03'),
+(248, 8, 1, 'Morning meeting', 1512543600, 1512547200, 244, '2017-11-08 08:39:03'),
+(249, 8, 2, 'Morning meeting', 1510124400, 1510126200, 0, '2017-11-08 08:39:29'),
+(250, 8, 2, 'Morning meeting', 1511334000, 1511335800, 249, '2017-11-08 08:39:29'),
+(251, 8, 2, 'Morning meeting', 1512543600, 1512545400, 249, '2017-11-08 08:39:29'),
+(252, 7, 1, 'Meeting', 1510128000, 1510131600, 0, '2017-11-08 08:40:05'),
+(253, 7, 1, 'Meeting', 1512720000, 1512723600, 252, '2017-11-08 08:40:05');
 
 -- --------------------------------------------------------
 
@@ -83,7 +89,8 @@ CREATE TABLE `bk_rooms` (
 
 INSERT INTO `bk_rooms` (`id`, `name`) VALUES
 (1, 'Room 1'),
-(2, 'Room 2');
+(2, 'Room 2'),
+(3, 'Room 3');
 
 -- --------------------------------------------------------
 
@@ -107,7 +114,9 @@ CREATE TABLE `bk_users` (
 --
 
 INSERT INTO `bk_users` (`id`, `name`, `email`, `password`, `id_role`, `token`, `token_create_at`, `create_at`) VALUES
-(1, 'test', 'test@test.com', '$2y$10$SNI/U6z2Jd7Aa3.9pBdEiOxCQye5fJrYUE8..hx3nrLc5UOgZ8JnW', 2, 'SXq8igciGqPQKJRwcteEhhb3RYYnJHfc', 1509631495, '2017-11-02 08:19:31');
+(7, 'max', 'max@mail.com', '$2y$10$dLFOVxi00VKkrGT/p2N9PeQuuzoCiJhEAUXzgq3bMWgyLthKQSzQ2', 2, 'LRCKDvnCJqGzUb31GvbWDeyAdozEVZ2h', 1510124176, '2017-11-05 18:10:56'),
+(8, 'yevhen', 'leo@mail.cz', '$2y$10$ApppotcNRkQjiIDRc/JTruCincj.T/.yEcl934GwcH4566JOrLHlS', 1, 'XqR5lWSIQuoGmuoMopLJ0N2MHzZs8X3V', 1510127972, '2017-11-05 18:19:07'),
+(9, 'test', 'test@test.com', '$2y$10$KY7dJuS9vbbBsROU8oWOvegjzvphl8Kp3aKsAqMBz0LyPnrkc0v9e', 2, 'BRMpu3btOHkbtyXVavUtE4wkiwEWc4yd', 1509902599, '2017-11-05 18:19:17');
 
 --
 -- Индексы сохранённых таблиц
@@ -145,7 +154,7 @@ ALTER TABLE `bk_users`
 -- AUTO_INCREMENT для таблицы `bk_events`
 --
 ALTER TABLE `bk_events`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=254;
 --
 -- AUTO_INCREMENT для таблицы `bk_roles`
 --
@@ -155,12 +164,12 @@ ALTER TABLE `bk_roles`
 -- AUTO_INCREMENT для таблицы `bk_rooms`
 --
 ALTER TABLE `bk_rooms`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT для таблицы `bk_users`
 --
 ALTER TABLE `bk_users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

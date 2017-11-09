@@ -18,9 +18,9 @@
         </whitelist>
     </filter>
     <php>
-        <var name="DB_DSN" value="mysql:dbname=booker;host=localhost" />
-        <var name="DB_USER" value="root" />
-        <var name="DB_PASSWD" value="root" />
-        <var name="DB_DBNAME" value="booker" />
+        <var name="DB_DSN" value="mysql:dbname=user11;host=localhost" />
+        <var name="DB_USER" value="user11" />
+        <var name="DB_PASSWD" value="tuser11" />
+        <var name="DB_DBNAME" value="user11" />
     </php>
 </phpunit>

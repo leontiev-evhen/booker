@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<mysqldump xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<database name="booker">
+	<table_structure name="bk_rooms">
+		<field Field="id" Type="int(11)" Null="NO" Key="PRI" Extra="auto_increment" Comment="" />
+		<field Field="name" Type="varchar(255)" Null="NO" Key="" Extra="" Comment="" />
+		<key Table="bk_rooms" Non_unique="0" Key_name="PRIMARY" Seq_in_index="1" Column_name="id" Collation="A" Cardinality="2" Null="" Index_type="BTREE" Comment="" Index_comment="" />
+		<options Name="bk_rooms" Engine="InnoDB" Version="10" Row_format="Compact" Rows="2" Avg_row_length="8192" Data_length="16384" Max_data_length="0" Index_length="0" Data_free="0" Auto_increment="3" Create_time="2017-10-31 06:02:20" Collation="utf8_general_ci" Create_options="" Comment="" />
+	</table_structure>
+	<table_data name="bk_rooms">
+	<row>
+		<field name="id">1</field>
+		<field name="name">Room 1</field>
+	</row>
+	<row>
+		<field name="id">2</field>
+		<field name="name">Room 2</field>
+	</row>
+	<row>
+		<field name="id">3</field>
+		<field name="name">Room 3</field>
+	</row>
+	</table_data>
+</database>
+</mysqldump>

@@ -7,12 +7,17 @@ class RoomsModel extends Model
 {
     private $table = 'rooms';
 
+    /**
+     * get all rooms
+     * @return array|boolean
+     * */
     public function getAllRooms ()
     {
         $sql = $this->select([
                 'id',
                 'name',])
             ->from(DB_PREFIX.$this->table)
+            ->limit(NUM_SHOW_ROOM)
            	->execute();
         $sql = str_replace(["'<", ">'"], '', $sql);
         

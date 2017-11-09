@@ -7,6 +7,11 @@ class UsersModel extends Model
 {
 	private $table = 'users';
 
+
+    /**
+     * get all users
+     * @return array|boolean
+     * */
     public function getAllUsers ()
     {
         $sql = $this->select([
@@ -27,6 +32,11 @@ class UsersModel extends Model
         return false;
     }
 
+    /**
+     * get one user
+     * @param integer $id
+     * @return array|boolean
+     * */
     public function getOneUser ($id)
     {
         $sql = $this->select([
@@ -49,25 +59,12 @@ class UsersModel extends Model
         }  
         return false;
     }
-	
-	// public function getToken ($token)
- //    {
- //        $sql = $this->select([
- //                'id'])
- //            ->from(DB_PREFIX.$this->table)
- //            ->where(['token' => "<:token>"])
-	// 		->limit(1)
- //            ->execute();
- //        $sql = str_replace(["'<", ">'"], '', $sql);
-        
- //        $STH = $this->connect->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
- //        if ($STH->execute([':token' => $token]))
- //        {
- //            return $STH->fetch(PDO::FETCH_ASSOC);
- //        }  
- //        return false;
- //    }
 
+    /**
+     * create user
+     * @param object $data
+     * @return array
+     * */
 	public function createUser ($data)
     {
     	if (!$this->checkUniqueEmail($data->email))
@@ -103,6 +100,12 @@ class UsersModel extends Model
     	}
     }
 
+     /**
+     * upadte user
+     * @param object $data
+     * @param integer $id
+     * @return array
+     * */
     public function updateUser ($data, $id)
     {
 		if (!$this->checkUniqueEmailUpdate($data->email, $id))
@@ -137,6 +140,11 @@ class UsersModel extends Model
     	}
     }
 
+    /**
+     * delete user
+     * @param integer $id
+     * @return boolean
+     * */
     public function deleteUser ($id)
     {
         $sql = $this->select([
@@ -174,6 +182,11 @@ class UsersModel extends Model
         return false;
     }
 
+    /**
+     * check user from authorization
+     * @param object $data
+     * @return array|boolean
+     * */
     public function checkUser ($data)
     {
     	$sql = $this->select([
@@ -195,6 +208,11 @@ class UsersModel extends Model
         return false;
     }
 
+    /**
+     * check equal name email when create user
+     * @param string $email
+     * @return boolean
+     * */
     private function checkUniqueEmail ($email)
     {
     	$sql = $this->select([
@@ -214,6 +232,12 @@ class UsersModel extends Model
         return false;
     }
 
+    /**
+     * check equal name email when update user
+     * @param string $email
+     * @param integer $id
+     * @return boolean
+     * */
     private function checkUniqueEmailUpdate ($email, $id)
     {
         $sql = $this->select([
@@ -237,6 +261,11 @@ class UsersModel extends Model
         return false;
     }
 
+     /**
+     * update user token
+     * @param array $data
+     * @return boolean
+     * */
     public function updateToken ($data)
     {
 		$sql = $this->update()
@@ -264,6 +293,11 @@ class UsersModel extends Model
         return false;
     }
 
+    /**
+     * check authorization user
+     * @param string $token
+     * @return array|boolean
+     * */
     public function checkAuth ($token)
     {
     	$sql = $this->select([

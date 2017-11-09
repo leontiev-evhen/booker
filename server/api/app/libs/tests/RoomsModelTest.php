@@ -23,7 +23,7 @@ class RoomsModelTest extends TestCase
 
     public function getDataSet()
     {
-        return $this->createMySQLXMLDataSet(dirname(__FILE__). '/dump/dump_users.xml');
+        return $this->createMySQLXMLDataSet(dirname(__FILE__). '/dump/dump_rooms.xml');
     }
 
     public static function setUpBeforeClass()

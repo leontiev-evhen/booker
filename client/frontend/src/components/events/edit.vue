@@ -275,7 +275,7 @@ export default {
 </script>
 
 
-<style scope>
+<style>
 	.auth_block {
 		display: none;
 	}
