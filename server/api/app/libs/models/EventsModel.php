@@ -20,15 +20,8 @@ class EventsModel extends Model
     public function getAll ($id_room, $month, $year) 
     {
         $month += 1; 
-		if (!function_exists('cal_days_in_month')) 
-		{ 
-			function cal_days_in_month($calendar, $month, $year) 
-			{ 
-				return date('t', mktime(0, 0, 0, $month, 1, $year)); 
-			} 
-		} 
-		
-        $days = cal_days_in_month(CAL_GREGORIAN, $month, $year);
+	
+        $days = date('t', mktime(0, 0, 0, $month, 1, $year));
         $time_start = strtotime($year.'/'.$month.'/01');
         $time_end = strtotime($year.'/'.$month.'/'.$days);
 
