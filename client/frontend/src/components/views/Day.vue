@@ -42,7 +42,7 @@ export default {
   methods: {
 		openModal: function (id) {
 			let self = this;
-			var prev_page = window.open(self.$parent.$parent.$parent.$parent.BASE_URL + '/#/event/edit/' + id, '_blank', 'location=yes,height=550,width=550,scrollbars=no,status=yes');
+			var prev_page = window.open(self.$parent.$parent.$parent.$parent.BASE_URL + '/#/event/edit/' + id, '_blank', 'location=yes,height=550,width=550,scrollbars=yes,status=yes');
 			prev_page.onbeforeunload = function () {
 				self.$emit('editEvent');
 			};
