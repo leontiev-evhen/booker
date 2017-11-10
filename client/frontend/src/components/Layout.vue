@@ -2,7 +2,7 @@
   	<div class="layout">
   		<div class="row auth_block">
 			<div class="col-md-1 link-home">
-				<a :href="$parent.BASE_URL"><i class="fa fa-home" aria-hidden="true"></i></a>
+				<a :href="$parent.BASE_URL"><i class="fa fa-home" aria-hidden="true"></i> home</a>
 			</div>
 			<div class="col-md-offset-8 col-md-3">
 				<div>
