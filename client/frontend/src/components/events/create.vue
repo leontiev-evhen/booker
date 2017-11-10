@@ -204,6 +204,7 @@ export default {
 					})
  			}
  		},
+		 //validate data
  		validator: function () {
 			
 
@@ -275,6 +276,7 @@ export default {
  			this.error = '';
  			return true;
  		},
+		 //max count repeat in the period
  		countRepeat: function (item) {
  			switch (item) {
  				case 'weekly':

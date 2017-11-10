@@ -113,7 +113,6 @@ export default {
 				}
 				this.time = arr_time;
 			} else {
-				console.log(123)
 				this.time = this.time;
 			}
 		},

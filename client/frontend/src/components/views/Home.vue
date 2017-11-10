@@ -109,6 +109,8 @@ export default {
 		editEvent: function () {
 			this.getEvents();
 		},
+		
+		//generate the calendar
     	getMonthArr: function (year, month, format = 'ua' ) {
 		
 			  this.calendar_days = [];
@@ -140,7 +142,8 @@ export default {
 				  
 				  if (this.events) {
 					  for (var k in this.events) {
-						if (new Date(this.events[k].time_start * 1000).getDate() == i && new Date(this.events[k].time_start * 1000).getMonth() == month) {
+						if (new Date(this.events[k].time_start * 1000).getDate() == i &&
+						 	new Date(this.events[k].time_start * 1000).getMonth() == month) {
 							events.push(this.events[k])
 						}
 					  }
@@ -167,7 +170,7 @@ export default {
          return day;
 	   },
 
-
+		//get month
 		changeMonth: function (operation) {
 			this.month_num += operation
 	      
@@ -185,6 +188,7 @@ export default {
 			this.calendar_days = this.getMonthArr(this.year, this.month_num);
 	    },
 
+		//start week monday or sunday
 	   changeFormat: function () {
 	      if (this.format == 'ua') {
 	        this.format = 'usa';
@@ -195,6 +199,7 @@ export default {
 	      }
 	    },
 
+		//change time format 24 or 12
 	    changeTimeFormat: function () {
 
 	      	if (localStorage['time_format'] == 24) {
@@ -216,6 +221,7 @@ export default {
 	   		this.getEvents();
 	   },
 
+	 //get all events on the current period
 	   getEvents: function () {
 
     		this.axios.get(this.$parent.$parent.AJAX_URL + '/booker/client/api/events/room/' + this.room_id + '/month/' + this.month_num + '/year/' + this.year).then((response) => {

@@ -9,4 +9,4 @@ define('PASSWORD', 'tuser11');
 define('TYPE', '.json');
 define('ROLE', 1);
 define('DB_PREFIX', 'bk_');
-define('NUM_SHOW_ROOM', 2);
+define('NUM_SHOW_ROOM', 3);

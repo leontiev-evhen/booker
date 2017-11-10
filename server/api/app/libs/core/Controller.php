@@ -20,6 +20,9 @@ class Controller
        
     }
 
+    /**
+     * validate url params
+     */
     protected function validateParams ($data)
     {
         $param = explode('/', $data);
@@ -39,6 +42,9 @@ class Controller
         return $this->dataParam;
     }
 
+    /**
+     * validate data params in the HTTP method
+     */
     protected function validate ()
     {
     	$this->data = $this->getData();
@@ -60,12 +66,25 @@ class Controller
         throw new Exception('Invalid data');
     }
 
+    /**
+     * get data HTTP method 
+     */
+
     protected function getData ()
     {
     	$json = file_get_contents('php://input');
     	return json_decode($json);
     }
 
+    /**
+     * generate message response server
+     *
+     * @param integer $code
+     * @param boolean $success
+     * @param string $message
+     * @param array $data
+     * @return array
+     */
     protected function getServerAnswer ($code, $success, $message, $data = [])
     {
 

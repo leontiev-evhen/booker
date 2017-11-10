@@ -4,6 +4,12 @@ use libs\core\Controller;
 use libs\models\UsersModel;
 use libs\models\EventsModel;
 
+/**
+* UsersController
+* extends Controller 
+* @author Leontiev Yevhen <leontevevgenii@gmail.com>  
+*/
+
 class UsersController extends Controller
 {
 
@@ -12,6 +18,9 @@ class UsersController extends Controller
     protected $orders_model;
     private $authHeader;
 
+    /**
+     * array of the allowed params in the HTTP method
+     */
     protected $rules = [
         'name'      => 'string',
         'email'     => 'string',
@@ -19,6 +28,9 @@ class UsersController extends Controller
         'id_role'   => 'integer',
     ];
 
+    /**
+     * array of the allowed URL parameters
+     */
     protected $params = ['id'];
 
     public function __construct ($params)
@@ -35,6 +47,11 @@ class UsersController extends Controller
         }
     }
 
+    /**
+     * HTTP GET method
+     *
+     * @return array
+     */
     public function getUsers ()
     {
         if ($this->checkAuth($this->authHeader))
@@ -57,6 +74,11 @@ class UsersController extends Controller
         }
     }
 
+     /**
+     * get one user
+     *
+     * @return array
+     */
     private function getUserById ()
     {
         $data = $this->model->getOneUser($this->dataParam['id']);
@@ -70,6 +92,11 @@ class UsersController extends Controller
         }
     }
 
+    /**
+     * HTTP POST method
+     *
+     * @return array
+     */
     public function postUsers () 
     {
         if ($this->checkAuth($this->authHeader))
@@ -98,6 +125,11 @@ class UsersController extends Controller
         }
     }
 
+    /**
+     * HTTP PUT method
+     *
+     * @return array
+     */
     public function putUsers ()
     {
         if ($this->checkAuth($this->authHeader))
@@ -123,6 +155,11 @@ class UsersController extends Controller
         }
     }
 
+     /**
+     * HTTP DELETE method
+     *
+     * @return array
+     */
     public function deleteUsers ()
     {
         if ($this->checkAuth($this->authHeader))
@@ -147,6 +184,11 @@ class UsersController extends Controller
         }
     }
 
+    /**
+     * check authorization of the user
+     *
+     * @return array
+     */
     private function checkAuth ($access_token)
     {
         return $this->model->checkAuth($access_token);

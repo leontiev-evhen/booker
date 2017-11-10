@@ -28,7 +28,9 @@ export default {
 		}
 	},
   	created() {
-
+		/**
+		*check authorization of the user
+		 */
 		if (this.isJson(localStorage.getItem('profile')) && localStorage.getItem('profile')) {
 			let self = this;
 			let user = JSON.parse(localStorage.getItem('profile'));

@@ -3,6 +3,11 @@ namespace libs\controllers;
 use libs\core\Controller;
 use libs\models\RoomsModel;
 
+/**
+* RoomsController
+* extends Controller 
+* @author Leontiev Yevhen <leontevevgenii@gmail.com>  
+*/
 
 class RoomsController extends Controller
 {
@@ -14,6 +19,11 @@ class RoomsController extends Controller
         $this->model = new RoomsModel();
     }
 
+    /**
+     * HTTP GET method
+     *
+     * @return array
+     */
     public function getRooms ()
     {
     	$data = $this->model->getAllRooms();

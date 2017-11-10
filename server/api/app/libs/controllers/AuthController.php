@@ -3,6 +3,12 @@ namespace libs\controllers;
 use libs\core\Controller;
 use libs\models\UsersModel;
 
+/**
+* AuthController 
+* extends Controller
+* @author Leontiev Yevhen <leontevevgenii@gmail.com>  
+*/
+
 class AuthController extends Controller
 {
 
@@ -10,6 +16,9 @@ class AuthController extends Controller
     protected $orders_model;
     private $headers;
 
+    /**
+     * array of the allowed params in the HTTP method
+     */
     protected $rules = [
         'name'      => 'string',
         'email'     => 'string',
@@ -22,6 +31,11 @@ class AuthController extends Controller
         $this->headers = getallheaders();
     }
 
+    /**
+     * HTTP GET method
+     *
+     * @return array
+     */
     public function getAuth () 
     {
         $data = $this->checkAuth($this->headers['Authorization']);
@@ -35,6 +49,11 @@ class AuthController extends Controller
         }
     }
 
+     /**
+     * HTTP PUT method
+     *
+     * @return array
+     */
     public function putAuth () 
     {
         if ($this->validate()) 
@@ -65,6 +84,11 @@ class AuthController extends Controller
         return $this->getServerAnswer(400, false, 'Bad Request');
     }
 
+    /**
+     * HTTP POST method
+     *
+     * @return array
+     */
     public function postAuth () 
     {
         if ($this->validate()) 
@@ -86,12 +110,21 @@ class AuthController extends Controller
         return $this->getServerAnswer(400, false, 'Bad Request');
     }
 
-
+    /**
+     * check authorization user
+     *
+     * @return array
+     */
     private function checkAuth ($access_token)
     {
         return $this->model->checkAuth($access_token);
     }
 
+     /**
+     * create token for new session
+     *
+     * @return string
+     */
     private function createToken ($id) 
     {
         $data['access_token'] = $this->getToken();
@@ -100,6 +133,11 @@ class AuthController extends Controller
         return $data['access_token'];
     }
 
+     /**
+     * generate new token
+     *
+     * @return string
+     */
     private function getToken()
     {
         $token = "";

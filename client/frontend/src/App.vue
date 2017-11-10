@@ -13,7 +13,7 @@ export default {
               AJAX_URL: 'http://192.168.0.15/~user11',
               //AJAX_URL: 'http://courses.site',
               BASE_URL: 'http://192.168.0.15/~user11/booker',
-			       //BASE_URL: '',
+			//BASE_URL: '',
               user: null
         }
     },

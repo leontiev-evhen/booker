@@ -12,6 +12,9 @@ class RestServer
 {
     private static $type;
 
+     /**
+     * run application
+     */
     public static function run ()
     {
         $HTTPMethod = $_SERVER['REQUEST_METHOD'];
@@ -54,6 +57,9 @@ class RestServer
         }
     }
 
+    /**
+     * return response server
+     */
     private function setMethod($class, $method)
     {
         if ( method_exists($class, $method) )

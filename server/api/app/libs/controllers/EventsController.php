@@ -5,13 +5,21 @@ use libs\models\EventsModel;
 use libs\models\UsersModel;
 use \Exception;
 
+/**
+* EventsController
+* extends Controller 
+* @author Leontiev Yevhen <leontevevgenii@gmail.com>  
+*/
+
 class EventsController extends Controller
 {
 	protected $model;
 	private $headers;
 	private $authHeader;
 
-
+    /**
+     * array of the allowed params in the HTTP method
+     */
 	protected $rules = [
         'time_start'     => 'integer',
 		'time_end'       => 'integer',
@@ -23,7 +31,9 @@ class EventsController extends Controller
         'repeat'         => 'integer',
         'parent_id'      => 'integer'
 	];
-
+    /**
+     * array of the allowed URL parameters
+     */
     protected $params = ['id', 'month', 'year', 'room'];
 
     public function __construct ($params)
@@ -39,6 +49,12 @@ class EventsController extends Controller
         }
     }
 
+    
+    /**
+     * HTTP GET method
+     *
+     * @return array
+     */
     public function getEvents ()
     {
     	if (!empty($this->dataParam['id']))
@@ -54,6 +70,12 @@ class EventsController extends Controller
         return $this->getServerAnswer(200, false, 'events not found');
     }
 
+    
+    /**
+     * get one event
+     *
+     * @return array
+     */
     public function getEventById ()
     {
         $data = $this->model->getOne($this->dataParam['id']);
@@ -69,6 +91,11 @@ class EventsController extends Controller
         }
     }
 
+    /**
+     * HTTP POST method
+     *
+     * @return array
+     */
   	public function postEvents ()
 	{
 		if ($this->validate()) 
@@ -98,6 +125,11 @@ class EventsController extends Controller
 		return $this->getServerAnswer(400, false, 'Bad Request');  
 	}
 
+     /**
+     * HTTP PUT method
+     *
+     * @return array
+     */
 	public function putEvents ()
 	{
 		if ($this->validate()) 
@@ -125,6 +157,11 @@ class EventsController extends Controller
 		return $this->getServerAnswer(400, false, 'Bad Request');  
 	}
 
+    /**
+     * HTTP DELETE method
+     *
+     * @return array
+     */
     public function deleteEvents ()
     {
         if ($this->dataParam['id']) 
@@ -142,6 +179,12 @@ class EventsController extends Controller
         return $this->getServerAnswer(400, false, 'Bad Request');
     }
 
+    /**
+     * validate the incoming parameters
+     *
+     * @param object $data
+     * @return array
+     */
     private function validator ($data) 
     {
         
@@ -185,6 +228,10 @@ class EventsController extends Controller
         return ['result' => true, 'message' => 'data is valid'];
     }
 
+    /**
+     * get info of the user
+     * @return array|boolean
+     */
     private function getUserInfo ()
     {
         $authHeader = isset($this->headers['Authorization']) ? $this->headers['Authorization'] : false;
