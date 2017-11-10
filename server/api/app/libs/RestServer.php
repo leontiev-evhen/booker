@@ -3,6 +3,11 @@ namespace libs;
 use libs\helpers\ConverterHelper;
 use Exception;
 
+/**
+* RestServer is the base class for run to application
+* @author Leontiev Yevhen <leontevevgenii@gmail.com>  
+*/
+
 class RestServer
 {
     private static $type;
@@ -52,10 +57,8 @@ class RestServer
     private function setMethod($class, $method)
     {
         if ( method_exists($class, $method) )
-        {
-       
-            $data = call_user_func([$class, $method]);
-            
+        {      
+            $data = call_user_func([$class, $method]);      
             ConverterHelper::chooseTypeOutput($data, self::$type);
         }
     }

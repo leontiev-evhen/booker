@@ -2,6 +2,11 @@
 namespace libs\helpers;
 use \SimpleXMLElement;
 
+/**
+* ConverterHelper is the helper for type of data conversion
+* @author Leontiev Yevhen <leontevevgenii@gmail.com>  
+*/
+
 class ConverterHelper
 {
     private $type = '';
@@ -29,12 +34,20 @@ class ConverterHelper
         return $data;
     }
 
+    /**
+     * convert data into JSON format
+     * 
+     */
     private function convertJSON ($data)
     {
         header('Content-Type: application/json; charset=utf-8');
         echo json_encode($data);
     }
 
+    /**
+     * convert data into XML format
+     * 
+     */
     private function convertXML ($data)
     {
         header('Content-Type: application/xml; charset=utf-8');
@@ -75,6 +88,10 @@ class ConverterHelper
         echo $xml->asXML();
     }
 
+     /**
+     * convert data into TEXT format
+     * 
+     */
     private function convertTXT ($data)
     {
         header('Content-Type: text/javascript; charset=utf-8');
@@ -82,6 +99,10 @@ class ConverterHelper
         print_r($data);
     }
 
+    /**
+     * convert data into HTML format
+     * 
+     */
     private function convertHTML ($data)
     {
         header('Content-Type: text/html; charset=utf-8');

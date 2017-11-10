@@ -1,6 +1,11 @@
 <?php 
 namespace libs\core\db;
 
+/**
+* Sql represents a DB query, use Fluent Interface
+* @author Leontiev Yevhen <leontevevgenii@gmail.com>  
+*/
+
 class Sql
 {
     protected $query;

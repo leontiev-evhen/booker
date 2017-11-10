@@ -3,6 +3,12 @@ namespace libs\models;
 use libs\core\Model;
 use \PDO;
 
+/**
+* RoomsModel is the base class for work with the table of rooms 
+* extends class Model
+* @author Leontiev Yevhen <leontevevgenii@gmail.com>  
+*/
+
 class RoomsModel extends Model
 {
     private $table = 'rooms';

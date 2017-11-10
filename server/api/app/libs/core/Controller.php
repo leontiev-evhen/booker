@@ -2,6 +2,11 @@
 namespace libs\core;
 use \Exception;
 
+/**
+* Controller is the base class for all controller classes
+* @author Leontiev Yevhen <leontevevgenii@gmail.com>  
+*/
+
 class Controller
 {
     protected $model;

@@ -3,6 +3,12 @@ namespace libs\models;
 use libs\core\Model;
 use \PDO;
 
+/**
+* UsersModel is the base class for work with the table of users 
+* extends class Model
+* @author Leontiev Yevhen <leontevevgenii@gmail.com>  
+*/
+
 class UsersModel extends Model
 {
 	private $table = 'users';

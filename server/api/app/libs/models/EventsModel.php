@@ -4,6 +4,12 @@ use libs\core\Model;
 use \PDO;
 use \DateTime;
 
+/**
+* EventsModel is the base class for work with the table of events 
+* extends class Model
+* @author Leontiev Yevhen <leontevevgenii@gmail.com>  
+*/
+
 class EventsModel extends Model
 {
     private $table = 'events';
